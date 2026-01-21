@@ -1,0 +1,73 @@
+# Cursor Rules for Portfolio App
+
+## Project Overview
+This is a React + TypeScript portfolio application using Vite, Tailwind CSS, and React Router.
+
+## Tech Stack
+- **Framework**: React 19 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS v4
+- **Routing**: React Router DOM v7
+- **Forms**: React Hook Form
+- **Icons**: Lucide React
+- **HTTP Client**: Axios
+
+## Code Style Guidelines
+
+### TypeScript
+- Always use TypeScript for type safety
+- Define interfaces/types for props and data structures
+- Avoid `any` type - use proper types or `unknown`
+- Use strict TypeScript configuration
+
+### React
+- Use functional components with hooks
+- Prefer named exports for components
+- Use React Hook Form for form management
+- Keep components small and focused (single responsibility)
+- Use proper prop types/interfaces
+
+### Styling
+- Use Tailwind CSS utility classes
+- Reference CSS variables from `index.css` using `var(--variableName)`
+- Available CSS variables:
+  - `--primary`: #16A34A (green)
+  - `--secondary`: #064E3B (dark green)
+  - `--accent`: #86EFAC (light green)
+  - `--background`: #FFFFFF
+  - `--surface`: #F0FDF4
+  - `--textPrimary`: #052E16
+  - `--textSecondary`: #166534
+  - `--textBlack`: #000
+
+### File Structure
+- Components: `src/components/`
+- Pages: `src/pages/`
+- Services/APIs: `src/services/`
+- Types/Interfaces: `src/Types/` or `src/interfaces/`
+- Utils: `src/utils/`
+- Styles: `src/styles/`
+
+### Naming Conventions
+- Components: PascalCase (e.g., `DoctorCard.tsx`)
+- Files: Match component name
+- Functions/Variables: camelCase
+- Constants: UPPER_SNAKE_CASE
+
+### Best Practices
+- Always handle loading and error states
+- Use proper error boundaries where needed
+- Implement proper form validation
+- Keep components reusable and composable
+- Use semantic HTML elements
+- Ensure accessibility (a11y) where possible
+- Write clean, readable, and maintainable code
+
+### Dependencies
+- Do not add unnecessary dependencies
+- Use existing dependencies when possible
+- Check package.json before suggesting new packages
+
+### Git
+- Write meaningful commit messages
+- Keep commits focused and atomic
