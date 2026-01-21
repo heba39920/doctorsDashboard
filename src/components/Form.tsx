@@ -40,7 +40,7 @@ export const Form = () => {
       const formData = new FormData()
       formData.append("name", data.name)
       
-      selectedFiles.forEach((fileWithId, index) => {
+      selectedFiles.forEach((fileWithId) => {
         formData.append(`files`, fileWithId.file)
       })
 
