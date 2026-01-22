@@ -1,136 +1,102 @@
-import { useState } from "react"
-import { DoctorDetailsModal } from "../components/DoctorsComponents/DoctorDetailsModal"
+import { useNavigate } from "react-router-dom"
+import { Loader2, AlertCircle } from "lucide-react"
+import { useTranslation } from "react-i18next"
+import { useGetDoctors } from "../utils/hooks/Hooks"
+import { convertDoctorListItemToLegacy } from "../utils/helperfunctions/doctorUtils"
 import type { Doctor } from "../interfaces/interfaces"
 import DoctorCard from "../components/DoctorsComponents/DoctorCard"
 
-const dummyDoctors: Doctor[] = [
-  {
-    id: "1",
-    name: "Dr. Sarah Johnson",
-    email: "sarah.johnson@hospital.com",
-    phone: "+1 (555) 123-4567",
-    specialization: "Cardiology",
-    location: "New York, NY",
-    experience: "15 years",
-    joinDate: "2020-01-15",
-    filesCount: 12
-  },
-  {
-    id: "2",
-    name: "Dr. Michael Chen",
-    email: "michael.chen@hospital.com",
-    phone: "+1 (555) 234-5678",
-    specialization: "Neurology",
-    location: "Los Angeles, CA",
-    experience: "10 years",
-    joinDate: "2021-03-22",
-    filesCount: 8
-  },
-  {
-    id: "3",
-    name: "Dr. Emily Rodriguez",
-    email: "emily.rodriguez@hospital.com",
-    phone: "+1 (555) 345-6789",
-    specialization: "Pediatrics",
-    location: "Chicago, IL",
-    experience: "8 years",
-    joinDate: "2022-06-10",
-    filesCount: 15
-  },
-  {
-    id: "4",
-    name: "Dr. James Wilson",
-    email: "james.wilson@hospital.com",
-    phone: "+1 (555) 456-7890",
-    specialization: "Orthopedics",
-    location: "Houston, TX",
-    experience: "20 years",
-    joinDate: "2019-11-05",
-    filesCount: 22
-  },
-  {
-    id: "5",
-    name: "Dr. Lisa Anderson",
-    email: "lisa.anderson@hospital.com",
-    phone: "+1 (555) 567-8901",
-    specialization: "Dermatology",
-    location: "Phoenix, AZ",
-    experience: "12 years",
-    joinDate: "2020-08-18",
-    filesCount: 9
-  },
-  {
-    id: "6",
-    name: "Dr. Robert Taylor",
-    email: "robert.taylor@hospital.com",
-    phone: "+1 (555) 678-9012",
-    specialization: "Oncology",
-    location: "Philadelphia, PA",
-    experience: "18 years",
-    joinDate: "2019-04-12",
-    filesCount: 31
-  }
-]
-
-
 const Dashboard = () => {
-  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const { data, isLoading, isError, error } = useGetDoctors()
 
   const handleViewDetails = (doctor: Doctor) => {
-    setSelectedDoctor(doctor)
-    setIsModalOpen(true)
+    navigate(`/doctor/${doctor.id}`)
   }
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedDoctor(null)
+  const doctors = data?.doctors ? data.doctors.map(convertDoctorListItemToLegacy) : []
+  const totalFiles = doctors.reduce((sum, doc) => sum + doc.filesCount, 0)
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[var(--surface)] flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-[var(--primary)] animate-spin mx-auto mb-4" />
+          <p className="text-[var(--textSecondary)]">{t('dashboard.loadingDoctors')}</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-[var(--surface)] flex items-center justify-center p-6">
+        <div className="text-center max-w-md">
+          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-[var(--textPrimary)] mb-2">{t('dashboard.errorLoadingDoctors')}</h2>
+          <p className="text-[var(--textSecondary)] mb-4">
+            {error instanceof Error ? error.message : t('dashboard.errorOccurred')}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-[var(--primary)] text-white rounded-lg hover:bg-[var(--secondary)] transition-colors"
+          >
+            {t('common.retry')}
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <>
-      <div className="min-h-screen bg-[var(--surface)] p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-[var(--textPrimary)] mb-2">
-              Doctors Dashboard
-            </h1>
-            <p className="text-[var(--textSecondary)]">
-              Manage and view all registered doctors
-            </p>
-          </div>
+    <div className="min-h-screen bg-[var(--surface)] p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-[var(--textPrimary)] mb-2">
+            {t('dashboard.title')}
+          </h1>
+          <p className="text-[var(--textSecondary)]">
+            {t('dashboard.subtitle')}
+          </p>
+        </div>
 
-          <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-4">
-              <div className="px-4 py-2 bg-white rounded-lg border border-[var(--accent)]">
-                <span className="text-sm text-[var(--textSecondary)]">Total Doctors:</span>
-                <span className="ml-2 text-lg font-bold text-[var(--primary)]">
-                  {dummyDoctors.length}
-                </span>
-              </div>
-              <div className="px-4 py-2 bg-white rounded-lg border border-[var(--accent)]">
-                <span className="text-sm text-[var(--textSecondary)]">Total Files:</span>
-                <span className="ml-2 text-lg font-bold text-[var(--primary)]">
-                  {dummyDoctors.reduce((sum, doc) => sum + doc.filesCount, 0)}
-                </span>
-              </div>
+        <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <div className="px-4 py-2 bg-white rounded-lg border border-[var(--accent)]">
+              <span className="text-sm text-[var(--textSecondary)]">{t('dashboard.totalDoctors')}</span>
+              <span className="ml-2 text-lg font-bold text-[var(--primary)]">
+                {data?.total || doctors.length}
+              </span>
+            </div>
+            <div className="px-4 py-2 bg-white rounded-lg border border-[var(--accent)]">
+              <span className="text-sm text-[var(--textSecondary)]">{t('dashboard.totalFiles')}</span>
+              <span className="ml-2 text-lg font-bold text-[var(--primary)]">
+                {totalFiles}
+              </span>
             </div>
           </div>
+        </div>
 
+        {doctors.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-[var(--textSecondary)] text-lg mb-4">{t('dashboard.noDoctorsFound')}</p>
+            <button
+              onClick={() => navigate("/")}
+              className="px-4 py-2 bg-[var(--primary)] text-white rounded-lg hover:bg-[var(--secondary)] transition-colors"
+            >
+              {t('dashboard.addFirstDoctor')}
+            </button>
+          </div>
+        ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {dummyDoctors.map((doctor) => (
+            {doctors.map((doctor) => (
               <DoctorCard key={doctor.id} doctor={doctor} onViewDetails={handleViewDetails} />
             ))}
           </div>
-        </div>
+        )}
       </div>
-
-      <DoctorDetailsModal
-        doctor={selectedDoctor}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
-    </>
+    </div>
   )
 }
 

@@ -1,7 +1,10 @@
 import { Form } from "../components/Form"
 import { UserPlus } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 const Home = () => {
+    const { t } = useTranslation()
+    
     return (
         <div className="min-h-screen bg-[var(--surface)]">
             <div className="bg-white border-b border-[var(--accent)] shadow-sm">
@@ -12,10 +15,10 @@ const Home = () => {
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold text-[var(--textPrimary)]">
-                                Add New Doctor
+                                {t('home.addNewDoctor')}
                             </h1>
                             <p className="text-sm text-[var(--textSecondary)]">
-                                Register a new doctor and upload their documents
+                                {t('home.registerDoctor')}
                             </p>
                         </div>
                     </div>

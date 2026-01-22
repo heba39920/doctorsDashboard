@@ -1,6 +1,9 @@
-import { FileText, Upload, X } from "lucide-react"
+import { FileText, Upload, X, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
+import { useTranslation } from "react-i18next"
+import { useCreateDoctor } from "../utils/hooks/Hooks"
+import { useNavigate } from "react-router-dom"
 
 interface FormData {
   name: string
@@ -12,10 +15,16 @@ interface FileWithId {
 }
 
 export const Form = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
+    const { t } = useTranslation()
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>()
     const [isDragging, setIsDragging] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState<FileWithId[]>([])
+    const [successMessage, setSuccessMessage] = useState<string>("")
+    const [errorMessage, setErrorMessage] = useState<string>("")
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const navigate = useNavigate()
+    
+    const createDoctorMutation = useCreateDoctor()
   
     const handleFileSelect = (files: FileList | null) => {
       if (!files) return
@@ -34,33 +43,66 @@ export const Form = () => {
 
     const onSubmit = (data: FormData) => {
       if (selectedFiles.length === 0) {
+        setErrorMessage(t('form.pleaseSelectFile'))
         return
       }
+
+      setErrorMessage("")
+      setSuccessMessage("")
 
       const formData = new FormData()
       formData.append("name", data.name)
       
       selectedFiles.forEach((fileWithId) => {
-        formData.append(`files`, fileWithId.file)
+        formData.append("files", fileWithId.file)
       })
 
-      console.log("Form submitted:", data, "Files:", selectedFiles)
-      // TODO: Submit to API
+      createDoctorMutation.mutate(formData, {
+        onSuccess: (response) => {
+          setSuccessMessage(response.message || t('form.doctorCreatedSuccess'))
+          reset()
+          setSelectedFiles([])
+          if (fileInputRef.current) {
+            fileInputRef.current.value = ""
+          }
+          // Navigate to dashboard after 2 seconds
+          setTimeout(() => {
+            navigate("/dashboard")
+          }, 2000)
+        },
+        onError: (error: Error) => {
+          setErrorMessage(error.message || t('form.failedToCreate'))
+        }
+      })
     }
+
+    useEffect(() => {
+      if (successMessage) {
+        const timer = setTimeout(() => setSuccessMessage(""), 5000)
+        return () => clearTimeout(timer)
+      }
+    }, [successMessage])
+
+    useEffect(() => {
+      if (errorMessage) {
+        const timer = setTimeout(() => setErrorMessage(""), 5000)
+        return () => clearTimeout(timer)
+      }
+    }, [errorMessage])
 
   return (
     <div className="bg-[var(--surface)] text-[var(--textBlack)] flex min-h-screen justify-center items-start pt-10 pb-10">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 mt-10 w-full max-w-2xl px-4">
         <div className="flex flex-col gap-2">
           <label htmlFor="name" className="text-sm font-medium text-[var(--textPrimary)]">
-            Doctor Name
+            {t('form.doctorName')}
           </label>
           <input 
             type="text" 
             id="name" 
-            {...register("name", { required: "Name is required" })}  
+            {...register("name", { required: t('form.nameRequired') })}  
             className="text-sm w-full p-3 rounded-xl border-2 border-[var(--primary)] placeholder:text-[var(--textSecondary)] focus:border-[var(--secondary)] focus:ring-2 focus:ring-[var(--accent)] outline-none transition-all"
-            placeholder="Enter doctor's name"
+            placeholder={t('form.enterDoctorName')}
           />
           {errors.name && (
             <span className="text-red-500 text-sm">{errors.name.message}</span>
@@ -69,7 +111,7 @@ export const Form = () => {
 
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-[var(--textPrimary)]">
-            Upload Files
+            {t('form.uploadFiles')}
           </label>
           <div
             className={`relative border-2 border-dashed rounded-xl p-8 transition-all duration-200 ${
@@ -108,10 +150,10 @@ export const Form = () => {
               <Upload className={`w-12 h-12 ${isDragging ? "text-[var(--primary)]" : "text-[var(--textSecondary)]"}`} />
               <div className="text-center">
                 <p className="font-medium text-[var(--textPrimary)]">
-                  Click to upload or drag and drop
+                  {t('form.clickToUpload')}
                 </p>
                 <p className="text-sm text-[var(--textSecondary)] mt-1">
-                  Multiple files supported (.pdf, .png, .jpg, .jpeg, etc.)
+                  {t('form.multipleFilesSupported')}
                 </p>
               </div>
             </div>
@@ -121,7 +163,7 @@ export const Form = () => {
         {selectedFiles.length > 0 && (
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-[var(--textPrimary)]">
-              Selected Files ({selectedFiles.length})
+              {t('form.selectedFiles')} ({selectedFiles.length})
             </label>
             <div className="flex flex-col gap-2 max-h-64 overflow-y-auto p-3 bg-white rounded-lg border border-[var(--accent)]">
               {selectedFiles.map((fileWithId) => (
@@ -154,12 +196,33 @@ export const Form = () => {
           </div>
         )}
 
+        {successMessage && (
+          <div className="flex items-center gap-2 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
+            <CheckCircle className="w-5 h-5" />
+            <p className="text-sm font-medium">{successMessage}</p>
+          </div>
+        )}
+
+        {errorMessage && (
+          <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
+            <AlertCircle className="w-5 h-5" />
+            <p className="text-sm font-medium">{errorMessage}</p>
+          </div>
+        )}
+
         <button
           type="submit"
-          className="w-full py-3 px-6 bg-[var(--primary)] text-white font-medium rounded-xl hover:bg-[var(--secondary)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent)] disabled:opacity-50 disabled:cursor-not-allowed"
-          disabled={selectedFiles.length === 0}
+          className="w-full py-3 px-6 bg-[var(--primary)] text-white font-medium rounded-xl hover:bg-[var(--secondary)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          disabled={selectedFiles.length === 0 || createDoctorMutation.isPending}
         >
-          Submit
+          {createDoctorMutation.isPending ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              {t('form.creating')}
+            </>
+          ) : (
+            t('common.submit')
+          )}
         </button>
       </form>
     </div>
