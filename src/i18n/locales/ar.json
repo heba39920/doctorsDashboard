@@ -16,12 +16,12 @@
     "years": "سنوات"
   },
   "sidebar": {
-    "hospitalPortal": "بوابة المستشفى",
+   
     "managementSystem": "نظام الإدارة",
     "addDoctor": "إضافة طبيب",
     "dashboard": "لوحة التحكم",
     "analytics": "التحليلات",
-    "copyright": "© 2024 بوابة المستشفى"
+    "copyright": "© 2026 SCFHS."
   },
   "form": {
     "doctorName": "اسم الطبيب",
@@ -47,7 +47,9 @@
     "errorOccurred": "حدث خطأ أثناء تحميل الأطباء",
     "noDoctorsFound": "لم يتم العثور على أطباء",
     "addFirstDoctor": "إضافة أول طبيب",
-    "viewDetails": "عرض التفاصيل"
+    "viewDetails": "عرض التفاصيل",
+    "updateDoctor": "تحديث الطبيب",
+    "deleteDoctor": "حذف الطبيب"
   },
   "doctorDetails": {
     "title": "تفاصيل الطبيب",

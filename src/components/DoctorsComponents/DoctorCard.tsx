@@ -1,11 +1,57 @@
-import { User, Mail, Phone, MapPin, Calendar, Award, FileText } from "lucide-react"
+import { User, Mail, Phone, MapPin, Calendar, Award, FileText, Pencil, Trash2, Eye } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { formatValue } from "../../utils/helperfunctions/doctorUtils"
-import type { Doctor } from "../../interfaces/interfaces"
+import type { Doctor, DoctorData } from "../../interfaces/interfaces"
+import { useUpdateDoctor, useDeleteDoctor, useGetDoctorById } from "../../utils/hooks/Hooks"
+import { toast } from "react-toastify"
+import { useState } from "react"
+import { DeleteConfirmModal } from "../DeleteConfirmModal"
+import { EditDoctorModal } from "../EditDoctorModal"
 
-const DoctorCard = ({ doctor, onViewDetails }: { doctor: Doctor; onViewDetails: (doctor: Doctor) => void }) => {
+interface DoctorCardProps {
+  doctor: Doctor
+  onViewDetails: (doctor: Doctor) => void
+}
+
+const DoctorCard = ({ doctor, onViewDetails }: DoctorCardProps) => {
   const { t } = useTranslation()
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   
+  // Fetch full doctor data only when edit modal is open
+  const { data: doctorDataResponse } = useGetDoctorById(doctor.id, isUpdateModalOpen)
+  const doctorData = doctorDataResponse?.data || null
+
+  const updateDoctorMutation = useUpdateDoctor()
+  const handleUpdate = (updateData: Partial<DoctorData>) => {
+    updateDoctorMutation.mutate(
+      { id: doctor.id, data: updateData },
+      {
+        onSuccess: () => {
+          setIsUpdateModalOpen(false)
+          toast.success(t('doctorDetails.doctorUpdated'))
+        },
+        onError: (error: Error) => {
+          toast.error(t('doctorDetails.failedToUpdate'))
+          console.error('Error updating doctor:', error)
+        }
+      }
+    )
+  }
+
+  const deleteDoctorMutation = useDeleteDoctor()
+  const handleDelete = () => {
+    deleteDoctorMutation.mutate(doctor.id, {
+      onSuccess: () => {
+        setIsDeleteModalOpen(false)
+        toast.success(t('doctorDetails.doctorDeleted'))
+      },
+      onError: (error: Error) => {
+        toast.error(t('doctorDetails.failedToDelete'))
+        console.error('Error deleting doctor:', error)
+      }
+    })
+  }
   return (
     <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-[var(--accent)] hover:border-[var(--primary)]">
       <div className="flex items-start justify-between mb-4">
@@ -25,11 +71,16 @@ const DoctorCard = ({ doctor, onViewDetails }: { doctor: Doctor; onViewDetails: 
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1 bg-[var(--accent)] rounded-full">
-          <FileText className="w-4 h-4 text-[var(--primary)]" />
-          <span className="text-sm font-semibold text-[var(--textPrimary)]">
-            {doctor.filesCount}
-          </span>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-3 py-1 bg-[var(--accent)] rounded-full">
+            <FileText className="w-4 h-4 text-[var(--primary)]" />
+            <span className="text-sm font-semibold text-[var(--textPrimary)]">
+              {doctor.filesCount}
+            </span>
+          </div>
+       
+           
+         
         </div>
       </div>
 
@@ -54,14 +105,58 @@ const DoctorCard = ({ doctor, onViewDetails }: { doctor: Doctor; onViewDetails: 
         </div>
       </div>
 
-      <div className="pt-4 border-t border-[var(--accent)]">
+  
+       
+        <div className="flex items-center md:gap-2 gap-10 justify-center md:justify-start">
         <button
           onClick={() => onViewDetails(doctor)}
-          className="w-full py-2.5 px-4 bg-[var(--primary)] text-white font-medium rounded-lg hover:bg-[var(--secondary)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+          className="p-2 rounded-lg bg-[var(--accent)] hover:bg-[var(--primary)] hover:text-white transition-colors"
         >
-          {t('dashboard.viewDetails')}
+          <Eye className="w-6 h-6" />
         </button>
+         <button
+           onClick={(e) => {
+             e.stopPropagation()
+             setIsUpdateModalOpen(true)
+           }}
+           className="p-2 rounded-lg bg-[var(--accent)] hover:bg-[var(--primary)] hover:text-white transition-colors"
+           aria-label={t('dashboard.updateDoctor')}
+           title={t('dashboard.updateDoctor')}
+         >
+           <Pencil className="w-6 h-6" />
+         </button>
+      
+      
+         <button
+           onClick={(e) => {
+             e.stopPropagation()
+             setIsDeleteModalOpen(true)
+           }}
+           className="p-2 rounded-lg bg-[var(--accent)] hover:bg-red-500 hover:text-white transition-colors"
+           aria-label={t('dashboard.deleteDoctor')}
+           title={t('dashboard.deleteDoctor')}
+         >
+           <Trash2 className="w-6 h-6" />
+         </button>
+      
+   
       </div>
+      <DeleteConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        doctorName={doctor.name}
+        isDeleting={deleteDoctorMutation.isPending}
+      />
+      {doctorData && (
+        <EditDoctorModal
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          onSave={handleUpdate}
+          doctor={doctorData}
+          isUpdating={updateDoctorMutation.isPending}
+        />
+      )}
     </div>
   )
 }

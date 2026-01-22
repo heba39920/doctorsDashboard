@@ -3,13 +3,20 @@ import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 
-export const Sidebar = () => {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-[var(--surface)] text-[var(--textPrimary)] w-25 h-screen py-5 px-1 border-r border-[var(--accent)] flex flex-col fixed left-0 me-25">
+    <div className={`bg-[var(--surface)] text-[var(--textPrimary)] w-1/2 md:w-25 h-screen py-5 px-1 border-r border-[var(--accent)] flex flex-col fixed left-0 z-50 transition-transform duration-300 ${
+      isOpen ? 'translate-x-0' : '-translate-x-full'
+    } md:translate-x-0`}>
       <div className="mb-8">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 justify-center md:justify-start">
           <Stethoscope className="w-10 h-10 text-[var(--primary)]" />
           <h6 className="text-xs font-bold text-[var(--primary)] mb-1">SCFHS.</h6>
         </div>
@@ -19,8 +26,9 @@ export const Sidebar = () => {
           <li>
             <NavLink
               to="/"
+              onClick={onClose}
               className={({ isActive }) =>
-                `flex flex-col justify-center items-center rounded-xl gap-3 py-3 text-xs  transition-all duration-200 ${
+                `flex md:flex-col md:justify-center justify-start md:px-0 px-2 items-center rounded-xl gap-3 md:py-3 py-2 text-xs  transition-all duration-200 ${
                   isActive
                     ? ' text-(--primary) text-shadow-lg shadow-black'
                     : ' text-[var(--textPrimary)] hover:bg-(--accent)'
@@ -34,8 +42,9 @@ export const Sidebar = () => {
           <li>
             <NavLink
               to="/dashboard"
+              onClick={onClose}
               className={({ isActive }) =>
-                `flex flex-col justify-center items-center text-xs gap-3 p-3 rounded-xl transition-all duration-200 ${
+                `flex md:flex-col md:justify-center justify-start md:px-0 px-2 items-center text-xs gap-3 md:py-3 py-2 rounded-xl transition-all duration-200 ${
                   isActive
                     ? ' text-(--primary) text-shadow-lg shadow-black'
                     : ' text-[var(--textPrimary)] hover:bg-(--accent)'
@@ -47,8 +56,11 @@ export const Sidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/analytics" className={({ isActive }) =>
-                  `flex flex-col justify-center items-center text-xs gap-3 p-3 rounded-xl transition-all duration-200 ${
+            <NavLink 
+              to="/analytics" 
+              onClick={onClose}
+              className={({ isActive }) =>
+                  `flex md:flex-col md:justify-center justify-start md:px-0 px-2 items-center text-xs gap-3 md:py-3 py-2 rounded-xl transition-all duration-200 ${
                     isActive
                       ? ' text-(--primary) text-shadow-lg shadow-black'
                       : ' text-[var(--textPrimary)] hover:bg-(--accent)'

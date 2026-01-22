@@ -23,11 +23,11 @@ export const useCreateDoctor = () => {
     })
 }
 
-export const useGetDoctorById = (id: string) => {
+export const useGetDoctorById = (id: string, enabled: boolean = true) => {
     return useQuery({
         queryKey: ['doctor', id],
         queryFn: () => getDoctorById(id),
-        enabled: !!id
+        enabled: !!id && enabled
     })
 }
 

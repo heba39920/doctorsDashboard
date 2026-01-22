@@ -16,12 +16,12 @@
     "years": "Years"
   },
   "sidebar": {
-    "hospitalPortal": "Hospital Portal",
+ 
     "managementSystem": "Management System",
     "addDoctor": "Add Doctor",
     "dashboard": "Dashboard",
     "analytics": "Analytics",
-    "copyright": "© 2024 Hospital Portal"
+    "copyright": "© 2026 SCFHS."
   },
   "form": {
     "doctorName": "Doctor Name",
@@ -47,7 +47,9 @@
     "errorOccurred": "An error occurred while loading doctors",
     "noDoctorsFound": "No doctors found",
     "addFirstDoctor": "Add First Doctor",
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "updateDoctor": "Update Doctor",
+    "deleteDoctor": "Delete Doctor"
   },
   "doctorDetails": {
     "title": "Doctor Details",
