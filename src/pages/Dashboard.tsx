@@ -20,7 +20,7 @@ const Dashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[var(--surface)] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--surface)] flex items-center justify-center z-50">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-[var(--primary)] animate-spin mx-auto mb-4" />
           <p className="text-[var(--textSecondary)]">{t('dashboard.loadingDoctors')}</p>
@@ -31,7 +31,7 @@ const Dashboard = () => {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-[var(--surface)] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-[var(--surface)] flex items-center justify-center p-6 z-50">
         <div className="text-center max-w-md">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-[var(--textPrimary)] mb-2">{t('dashboard.errorLoadingDoctors')}</h2>

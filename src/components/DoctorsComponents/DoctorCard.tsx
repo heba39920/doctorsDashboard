@@ -53,7 +53,7 @@ const DoctorCard = ({ doctor, onViewDetails }: DoctorCardProps) => {
     })
   }
   return (
-    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-[var(--accent)] hover:border-[var(--primary)]">
+    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 py-6 px-4 border border-[var(--accent)] hover:border-[var(--primary)]">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-[var(--accent)] flex items-center justify-center flex-shrink-0">
@@ -71,17 +71,7 @@ const DoctorCard = ({ doctor, onViewDetails }: DoctorCardProps) => {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-3 py-1 bg-[var(--accent)] rounded-full">
-            <FileText className="w-4 h-4 text-[var(--primary)]" />
-            <span className="text-sm font-semibold text-[var(--textPrimary)]">
-              {doctor.filesCount}
-            </span>
-          </div>
-       
-           
-         
-        </div>
+
       </div>
 
       <div className="space-y-3 mb-4">
@@ -104,42 +94,64 @@ const DoctorCard = ({ doctor, onViewDetails }: DoctorCardProps) => {
           </span>
         </div>
       </div>
-
-  
-       
-        <div className="flex items-center md:gap-2 gap-10 justify-center md:justify-start">
+      <div className="pt-4 border-t border-[var(--accent)]">
+        <div className="flex items-center gap-1 flex-wrap justify-between ">
+          <button
+            onClick={() => onViewDetails(doctor)}
+            className="group relative cursor-pointer flex items-center gap-1 px-2 py-2.5 rounded-lg bg-[var(--primary)] text-white font-medium hover:bg-[var(--secondary)] transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
+            aria-label={t('dashboard.viewDetails')}
+          >
+            <Eye className="w-4 h-4 transition-transform group-hover:scale-110" />
+            <span className="text-sm hidden sm:inline">{t('dashboard.viewDetails')}</span>
+            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap sm:hidden">
+              {t('dashboard.viewDetails')}
+            </span>
+          </button>
+          
+        <div className="flex gap-3">
         <button
-          onClick={() => onViewDetails(doctor)}
-          className="p-2 rounded-lg bg-[var(--accent)] hover:bg-[var(--primary)] hover:text-white transition-colors"
-        >
-          <Eye className="w-6 h-6" />
-        </button>
-         <button
-           onClick={(e) => {
-             e.stopPropagation()
-             setIsUpdateModalOpen(true)
-           }}
-           className="p-2 rounded-lg bg-[var(--accent)] hover:bg-[var(--primary)] hover:text-white transition-colors"
-           aria-label={t('dashboard.updateDoctor')}
-           title={t('dashboard.updateDoctor')}
-         >
-           <Pencil className="w-6 h-6" />
-         </button>
-      
-      
-         <button
-           onClick={(e) => {
-             e.stopPropagation()
-             setIsDeleteModalOpen(true)
-           }}
-           className="p-2 rounded-lg bg-[var(--accent)] hover:bg-red-500 hover:text-white transition-colors"
-           aria-label={t('dashboard.deleteDoctor')}
-           title={t('dashboard.deleteDoctor')}
-         >
-           <Trash2 className="w-6 h-6" />
-         </button>
-      
-   
+            onClick={(e) => {
+              e.stopPropagation()
+              setIsUpdateModalOpen(true)
+            }}
+            className="group cursor-pointer relative flex items-center gap-1 px-2 py-2.5 rounded-lg bg-[var(--accent)] text-[var(--primary)] font-medium hover:bg-[var(--primary)] hover:text-white transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-[var(--primary)]/20"
+            aria-label={t('dashboard.updateDoctor')}
+            disabled={updateDoctorMutation.isPending}
+          >
+            <Pencil className="w-4 h-4 transition-transform group-hover:scale-110" />
+            <span className="text-sm hidden sm:inline">{t('dashboard.updateDoctor')}</span>
+            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap sm:hidden">
+              {t('dashboard.updateDoctor')}
+            </span>
+            {updateDoctorMutation.isPending && (
+              <span className="absolute inset-0 flex items-center justify-center bg-[var(--primary)]/50 rounded-lg">
+                <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+              </span>
+            )}
+          </button>
+        
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              setIsDeleteModalOpen(true)
+            }}
+            className="cursor-pointer group relative flex items-center gap-1 px-2 py-2.5 rounded-lg bg-red-50 text-red-600 font-medium hover:bg-red-600 hover:text-white transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-200 hover:border-red-600"
+            aria-label={t('dashboard.deleteDoctor')}
+            disabled={deleteDoctorMutation.isPending}
+          >
+            <Trash2 className="w-4 h-4 transition-transform group-hover:scale-110" />
+            <span className="text-sm hidden sm:inline">{t('dashboard.deleteDoctor')}</span>
+            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap sm:hidden">
+              {t('dashboard.deleteDoctor')}
+            </span>
+            {deleteDoctorMutation.isPending && (
+              <span className="absolute inset-0 flex items-center justify-center bg-red-600/50 rounded-lg">
+                <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+              </span>
+            )}
+          </button>
+        </div>
+        </div>
       </div>
       <DeleteConfirmModal
         isOpen={isDeleteModalOpen}

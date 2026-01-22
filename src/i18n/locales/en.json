@@ -48,8 +48,8 @@
     "noDoctorsFound": "No doctors found",
     "addFirstDoctor": "Add First Doctor",
     "viewDetails": "View Details",
-    "updateDoctor": "Update Doctor",
-    "deleteDoctor": "Delete Doctor"
+    "updateDoctor": "Update",
+    "deleteDoctor": "Delete"
   },
   "doctorDetails": {
     "title": "Doctor Details",
@@ -81,7 +81,7 @@
     "sendMessage": "Send Message",
     "viewDocuments": "View Documents",
     "editDetails": "Edit Details",
-    "deleteDoctor": "Delete Doctor",
+    "deleteDoctor": "Delete",
     "confirmDelete": "Are you sure you want to delete this doctor?",
     "deleteConfirmMessage": "This action cannot be undone.",
     "deleting": "Deleting...",

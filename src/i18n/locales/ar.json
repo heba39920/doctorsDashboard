@@ -48,8 +48,8 @@
     "noDoctorsFound": "لم يتم العثور على أطباء",
     "addFirstDoctor": "إضافة أول طبيب",
     "viewDetails": "عرض التفاصيل",
-    "updateDoctor": "تحديث الطبيب",
-    "deleteDoctor": "حذف الطبيب"
+    "updateDoctor": "تحديث",
+    "deleteDoctor": "حذف"
   },
   "doctorDetails": {
     "title": "تفاصيل الطبيب",
@@ -81,7 +81,7 @@
     "sendMessage": "إرسال رسالة",
     "viewDocuments": "عرض المستندات",
     "editDetails": "تعديل التفاصيل",
-    "deleteDoctor": "حذف الطبيب",
+    "deleteDoctor": "حذف",
     "confirmDelete": "هل أنت متأكد من حذف هذا الطبيب؟",
     "deleteConfirmMessage": "لا يمكن التراجع عن هذا الإجراء.",
     "deleting": "جاري الحذف...",

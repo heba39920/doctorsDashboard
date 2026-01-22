@@ -17,7 +17,7 @@ const Layout = () => {
       <main className="flex-1 overflow-auto md:ml-25">
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="absolute top-8 end-4 z-50 p-2 bg-[var(--primary)] text-white rounded-lg md:hidden hover:bg-[var(--secondary)] transition-colors"
+          className="absolute top-8 end-4 z-30 p-2 bg-[var(--primary)] text-white rounded-lg md:hidden hover:bg-[var(--secondary)] transition-colors"
           aria-label="Toggle sidebar"
         >
           <svg

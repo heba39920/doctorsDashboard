@@ -6,29 +6,29 @@ export const axiosInstance = axios.create({
   });
   
   // ---------- Request Interceptor (واحد فقط) ----------
-  axiosInstance.interceptors.request.use(
-    async (config) => {
-      // Try to get token from NextAuth session first (if in browser)
-      if (typeof window !== "undefined") {
-        try {
-          const sessionResponse = await fetch("/api/auth/session");
-          if (sessionResponse.ok) {
-            const session = await sessionResponse.json();
-            const token = session?.accessToken;
-            if (token) {
-              config.headers.Authorization = `Bearer ${token}`;
-            }
-          }
-        } catch (error) {
-          // Fallback to other sources on error
-        }
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
+  // axiosInstance.interceptors.request.use(
+  //   async (config) => {
+  //     // Try to get token from NextAuth session first (if in browser)
+  //     if (typeof window !== "undefined") {
+  //       try {
+  //         const sessionResponse = await fetch("/api/auth/session");
+  //         if (sessionResponse.ok) {
+  //           const session = await sessionResponse.json();
+  //           const token = session?.accessToken;
+  //           if (token) {
+  //             config.headers.Authorization = `Bearer ${token}`;
+  //           }
+  //         }
+  //       } catch (error) {
+  //         // Fallback to other sources on error
+  //       }
+  //     }
+  //     return config;
+  //   },
+  //   (error) => {
+  //     return Promise.reject(error);
+  //   }
+  // );
   
   // ---------- Response Interceptor (واحد فقط) ----------
   axiosInstance.interceptors.response.use(
