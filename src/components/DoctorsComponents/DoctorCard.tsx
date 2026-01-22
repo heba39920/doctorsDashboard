@@ -1,4 +1,4 @@
-import { User, Mail, Phone, MapPin, Calendar, Award, FileText, Pencil, Trash2, Eye } from "lucide-react"
+import { User, Mail, Phone, MapPin, Calendar, Award,  Pencil, Trash2, Eye } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { formatValue } from "../../utils/helperfunctions/doctorUtils"
 import type { Doctor, DoctorData } from "../../interfaces/interfaces"
