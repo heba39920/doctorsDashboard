@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { ArrowLeft, User, Mail, Phone, MapPin, Award, FileText, Briefcase, Building2, Calendar, Star, Loader2, AlertCircle, Trash2, Edit } from "lucide-react"
+import { ArrowLeft, User, Mail, Phone, MapPin, Award, FileText, Briefcase, Building2, Calendar, Star, Loader2, AlertCircle, Trash2, Edit, IdCard, GraduationCap, Shield, BookOpen, Trophy, BookMarked, BriefcaseBusiness, DollarSign, Clock, Code, AlertTriangle } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useGetProfessionalById, useDeleteProfessional, useUpdateProfessional } from "../utils/hooks/Hooks"
 import { convertProfessionalDataToLegacy, formatValue } from "../utils/helperfunctions/ProfessionalUtils"
@@ -72,12 +72,17 @@ const ProfessionalDetails = () => {
   const professionalData = data.data
   const professional = convertProfessionalDataToLegacy(professionalData)
   const specializations = professionalData.specializations || []
+  const subSpecializations = professionalData.sub_specializations || []
   const languages = professionalData.languages || []
   const certifications = professionalData.certifications || []
   const skills = professionalData.skills || []
   const degrees = professionalData.degrees_and_certificates || []
   const equipment_expertise = professionalData.equipment_expertise || []
-
+  const trainingCourses = professionalData.training_courses || []
+  const awardsAndRecognition = professionalData.awards_and_recognition || []
+  const researchAndPublications = professionalData.research_and_publications || []
+  const workPlaces = professionalData.work_places || []
+  const otherLicenses = professionalData.other_licenses || []
   return (
     <div className="min-h-screen bg-[var(--surface)]">
       {/* Hero Section */}
@@ -141,6 +146,24 @@ const ProfessionalDetails = () => {
               )}
 
               <div className="space-y-4">
+                {professionalData.professional_type && (
+                  <div className="flex items-start gap-4 p-4 bg-[var(--surface)] rounded-lg">
+                    <Briefcase className="w-6 h-6 text-[var(--primary)] flex-shrink-0 mt-1" />
+                    <div>
+                      <h3 className="font-semibold text-[var(--textPrimary)] mb-1">{t('professionalDetails.professionalType')}</h3>
+                      <p className="text-[var(--textSecondary)]">{professionalData.professional_type}</p>
+                    </div>
+                  </div>
+                )}
+                {professionalData.job_title && (
+                  <div className="flex items-start gap-4 p-4 bg-[var(--surface)] rounded-lg">
+                    <BriefcaseBusiness className="w-6 h-6 text-[var(--primary)] flex-shrink-0 mt-1" />
+                    <div>
+                      <h3 className="font-semibold text-[var(--textPrimary)] mb-1">{t('professionalDetails.jobTitle')}</h3>
+                      <p className="text-[var(--textSecondary)]">{professionalData.job_title}</p>
+                    </div>
+                  </div>
+                )}
                 <div className="flex items-start gap-4 p-4 bg-[var(--surface)] rounded-lg">
                   <Calendar className="w-6 h-6 text-[var(--primary)] flex-shrink-0 mt-1" />
                   <div>
@@ -174,9 +197,44 @@ const ProfessionalDetails = () => {
                 </div>
               </div>
 
+              {specializations.length > 0 && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <Award className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.specialization')}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {specializations.map((spec: string, index: number) => (
+                      <span key={index} className="px-3 py-1 bg-[var(--accent)] text-[var(--primary)] rounded-full text-sm font-medium">
+                        {spec}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {subSpecializations.length > 0 && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <Award className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.subSpecializations')}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {subSpecializations.map((subSpec: string, index: number) => (
+                      <span key={index} className="px-3 py-1 bg-[var(--accent)] text-[var(--primary)] rounded-full text-sm font-medium">
+                        {subSpec}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {degrees.length > 0 && (
                 <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
-                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3">{t('professionalDetails.degreesCertificates')}</h3>
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <GraduationCap className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.degreesCertificates')}
+                  </h3>
                   <ul className="space-y-2">
                     {degrees.map((degree: string, index: number) => (
                       <li key={index} className="flex items-start gap-2 text-[var(--textSecondary)]">
@@ -190,7 +248,10 @@ const ProfessionalDetails = () => {
 
               {certifications.length > 0 && (
                 <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
-                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3">{t('professionalDetails.certifications')}</h3>
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <Shield className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.certifications')}
+                  </h3>
                   <ul className="space-y-2">
                     {certifications.map((cert: string, index: number) => (
                       <li key={index} className="flex items-start gap-2 text-[var(--textSecondary)]">
@@ -199,6 +260,207 @@ const ProfessionalDetails = () => {
                       </li>
                     ))}
                   </ul>
+                </div>
+              )}
+
+              {professionalData.scfhs_license && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <Shield className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.scfhsLicense')}
+                  </h3>
+                  <div className="space-y-3">
+                    {professionalData.scfhs_license.license_number && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.licenseNumber')}:</span>
+                        <span className="text-sm font-medium text-[var(--textPrimary)]">{professionalData.scfhs_license.license_number}</span>
+                      </div>
+                    )}
+                    {professionalData.scfhs_license.license_type && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.licenseType')}:</span>
+                        <span className="text-sm font-medium text-[var(--textPrimary)]">{professionalData.scfhs_license.license_type}</span>
+                      </div>
+                    )}
+                    {professionalData.scfhs_license.issue_date && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.issueDate')}:</span>
+                        <span className="text-sm font-medium text-[var(--textPrimary)]">{professionalData.scfhs_license.issue_date}</span>
+                      </div>
+                    )}
+                    {professionalData.scfhs_license.expiry_date && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.expiryDate')}:</span>
+                        <span className="text-sm font-medium text-[var(--textPrimary)]">{professionalData.scfhs_license.expiry_date}</span>
+                      </div>
+                    )}
+                    {professionalData.scfhs_license.classification && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.classification')}:</span>
+                        <span className="text-sm font-medium text-[var(--textPrimary)]">{professionalData.scfhs_license.classification}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {otherLicenses.length > 0 && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <Shield className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.otherLicenses')}
+                  </h3>
+                  <div className="space-y-4">
+                    {otherLicenses.map((license, index: number) => (
+                      <div key={index} className="p-3 bg-white rounded-lg border border-[var(--accent)]">
+                        {license.issuer && (
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.issuer')}:</span>
+                            <span className="text-sm font-medium text-[var(--textPrimary)]">{license.issuer}</span>
+                          </div>
+                        )}
+                        {license.license_number && (
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.licenseNumber')}:</span>
+                            <span className="text-sm font-medium text-[var(--textPrimary)]">{license.license_number}</span>
+                          </div>
+                        )}
+                        {license.expiry && (
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.expiry')}:</span>
+                            <span className="text-sm font-medium text-[var(--textPrimary)]">{license.expiry}</span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {trainingCourses.length > 0 && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.trainingCourses')}
+                  </h3>
+                  <div className="space-y-3">
+                    {trainingCourses.map((course, index: number) => (
+                      <div key={index} className="p-3 bg-white rounded-lg border border-[var(--accent)]">
+                        {course.name && (
+                          <div className="font-medium text-[var(--textPrimary)] mb-1">{course.name}</div>
+                        )}
+                        <div className="flex flex-wrap gap-4 text-sm text-[var(--textSecondary)]">
+                          {course.provider && (
+                            <span>{t('professionalDetails.provider')}: {course.provider}</span>
+                          )}
+                          {course.year && (
+                            <span>{t('professionalDetails.year')}: {course.year}</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {awardsAndRecognition.length > 0 && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <Trophy className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.awardsAndRecognition')}
+                  </h3>
+                  <ul className="space-y-2">
+                    {awardsAndRecognition.map((award: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2 text-[var(--textSecondary)]">
+                        <span className="text-[var(--primary)] mt-1">•</span>
+                        <span>{award}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {researchAndPublications.length > 0 && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <BookMarked className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.researchAndPublications')}
+                  </h3>
+                  <ul className="space-y-2">
+                    {researchAndPublications.map((publication: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2 text-[var(--textSecondary)]">
+                        <span className="text-[var(--primary)] mt-1">•</span>
+                        <span>{publication}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {workPlaces.length > 0 && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3 flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.workPlaces')}
+                  </h3>
+                  <div className="space-y-4">
+                    {workPlaces.map((workplace, index: number) => (
+                      <div key={index} className="p-4 bg-white rounded-lg border border-[var(--accent)]">
+                        {workplace.workplace_name && (
+                          <h4 className="font-semibold text-[var(--textPrimary)] mb-2">{workplace.workplace_name}</h4>
+                        )}
+                        {workplace.position && (
+                          <div className="text-sm text-[var(--textSecondary)] mb-2">
+                            {t('professionalDetails.position')}: <span className="font-medium text-[var(--textPrimary)]">{workplace.position}</span>
+                          </div>
+                        )}
+                        <div className="flex flex-wrap gap-4 text-sm text-[var(--textSecondary)] mb-2">
+                          {workplace.start_date && (
+                            <span>{t('professionalDetails.startDate')}: {workplace.start_date}</span>
+                          )}
+                          {workplace.end_date && (
+                            <span>{t('professionalDetails.endDate')}: {workplace.end_date}</span>
+                          )}
+                        </div>
+                        {workplace.responsibilities && (
+                          <div className="mt-2">
+                            <span className="text-sm font-medium text-[var(--textPrimary)]">{t('professionalDetails.responsibilities')}:</span>
+                            <p className="text-sm text-[var(--textSecondary)] mt-1">{workplace.responsibilities}</p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {professionalData.current_workplace && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-2 flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.currentWorkplace')}
+                  </h3>
+                  <p className="text-[var(--textSecondary)]">{professionalData.current_workplace}</p>
+                </div>
+              )}
+
+              {professionalData.consultation_fees && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-2 flex items-center gap-2">
+                    <DollarSign className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.consultationFees')}
+                  </h3>
+                  <p className="text-[var(--textSecondary)]">{professionalData.consultation_fees}</p>
+                </div>
+              )}
+
+              {professionalData.availability && (
+                <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-2 flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-[var(--primary)]" />
+                    {t('professionalDetails.availability')}
+                  </h3>
+                  <p className="text-[var(--textSecondary)]">{professionalData.availability}</p>
                 </div>
               )}
                   {skills.length > 0 && (
@@ -216,7 +478,7 @@ const ProfessionalDetails = () => {
               )}
                  {equipment_expertise.length > 0 && (
                 <div className="mt-6 p-4 bg-[var(--surface)] rounded-lg">
-                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3">{t('professionalDetails.skills')}</h3>
+                  <h3 className="font-semibold text-[var(--textPrimary)] mb-3">{t('professionalDetails.equipmentExpertise')}</h3>
                   <ul className="space-y-2 grid md:grid-cols-3 grid-cols-1 gap-1">
                     {equipment_expertise.map((equipment: string, index: number) => (
                       <li key={index} className=" flex items-start gap-2 text-[var(--textSecondary)]">
@@ -283,6 +545,33 @@ const ProfessionalDetails = () => {
                 </div>
               )}
             </section>
+
+            {/* Analysis Section */}
+            {professionalData.raw_analysis && (
+              <section className="bg-white rounded-2xl shadow-lg p-8 border border-[var(--accent)]">
+                <h2 className="text-3xl font-bold text-[var(--textPrimary)] mb-6 flex items-center gap-3">
+                  <Code className="w-8 h-8 text-[var(--primary)]" />
+                  {t('professionalDetails.rawAnalysis')}
+                </h2>
+                <div className="p-4 bg-[var(--surface)] rounded-lg max-h-96 overflow-y-auto">
+                  <pre className="text-sm text-[var(--textSecondary)] whitespace-pre-wrap font-mono">
+                    {professionalData.raw_analysis}
+                  </pre>
+                </div>
+              </section>
+            )}
+
+            {professionalData.analysis_error && (
+              <section className="bg-white rounded-2xl shadow-lg p-8 border border-red-200">
+                <h2 className="text-2xl font-bold text-red-600 mb-4 flex items-center gap-3">
+                  <AlertTriangle className="w-6 h-6" />
+                  {t('professionalDetails.analysisError')}
+                </h2>
+                <div className="p-4 bg-red-50 rounded-lg">
+                  <p className="text-sm text-red-800">{professionalData.analysis_error}</p>
+                </div>
+              </section>
+            )}
           </div>
 
           {/* Right Column - Contact & Quick Info */}
@@ -338,6 +627,15 @@ const ProfessionalDetails = () => {
                     <p className="text-sm font-medium text-[var(--textPrimary)]">{formatValue(professional.location)}</p>
                   </div>
                 </div>
+             {professionalData.national_id && (
+              <div className="flex items-center gap-3 p-3 bg-[var(--surface)] rounded-lg">
+                <IdCard className="w-5 h-5 text-[var(--primary)]" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-[var(--textSecondary)]">{t('professionalDetails.nationalId')}</p>
+                  <p className="text-sm font-medium text-[var(--textPrimary)]">{professionalData.national_id}</p>
+                </div>
+              </div>
+             )}
               </div>
             </div>
 

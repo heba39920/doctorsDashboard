@@ -75,7 +75,7 @@ export const LanguageSwitcher = () => {
           />
           <div
             ref={dropdownRef}
-            className="absolute bottom-full mb-2 left-0 bg-white rounded-lg shadow-lg border border-[var(--accent)] z-20 min-w-[120px] md:fixed"
+            className="absolute bottom-full mb-2 left-0 bg-(--textPrimary) rounded-lg shadow-lg border border-[var(--accent)] z-20 min-w-[120px] md:fixed"
             style={isLargeScreen ? {
               top: `${position.top}px`,
               left: `${position.left}px`,
@@ -85,16 +85,16 @@ export const LanguageSwitcher = () => {
           >
             <button
               onClick={() => changeLanguage('en')}
-              className={`w-full text-left px-4 py-2 text-sm hover:bg-[var(--surface)] transition-colors ${
-                i18n.language === 'en' ? 'bg-[var(--accent)] text-[var(--primary)] font-semibold' : ''
+              className={`w-full rounded-t-lg text-left px-4 py-2 text-sm hover:bg-(--textSecondary) transition-colors ${
+                i18n.language === 'en' ? 'bg-(--secondary) text-(--background) font-semibold' : ''
               }`}
             >
               English
             </button>
             <button
               onClick={() => changeLanguage('ar')}
-              className={`w-full text-left px-4 py-2 text-sm hover:bg-[var(--surface)] transition-colors ${
-                i18n.language === 'ar' ? 'bg-[var(--accent)] text-[var(--primary)] font-semibold' : ''
+              className={`w-full text-left rounded-b-lg px-4 py-2 text-sm hover:bg-(--textSecondary) transition-colors ${
+                i18n.language === 'ar' ? 'bg-(--secondary) text-(--background) font-semibold' : ''
               }`}
             >
               العربية

@@ -12,7 +12,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className={`bg-[var(--textPrimary)] text-[var(--background)] w-1/2 md:w-25 h-screen py-5 px-1 border-r border-[var(--accent)] flex flex-col fixed left-0 z-50 transition-transform duration-300 ${
+    <div className={`bg-[var(--textPrimary)] text-[var(--background)] w-1/2 md:w-26 h-screen py-5 px-1 border-r border-[var(--accent)] flex flex-col fixed left-0 z-50 transition-transform duration-300 ${
       isOpen ? 'translate-x-0' : '-translate-x-full'
     } md:translate-x-0`}>
       <div className="mb-8">
@@ -28,7 +28,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               to="/"
               onClick={onClose}
               className={({ isActive }) =>
-                `flex md:flex-col md:justify-center justify-start md:px-0 px-2 items-center rounded-xl gap-3 md:py-3 py-2 text-xs  transition-all duration-200 ${
+                `flex md:flex-col justify-center md:px-0 px-2 items-center rounded-xl gap-3 md:py-3 py-2 text-xs  transition-all duration-200 ${
                   isActive
                     ? ' text-(--primary) '
                     : ' text-[var(--background)] hover:bg-(--secondary)'

@@ -95,62 +95,65 @@ const ProfessionalCard = ({ professional, onViewDetails }: ProfessionalCardProps
         </div>
       </div>
       <div className="pt-4 border-t border-[var(--accent)]">
-        <div className="flex items-center gap-1 flex-wrap justify-between ">
+        <div className="flex items-center gap-2 flex-wrap justify-between">
           <button
             onClick={() => onViewDetails(professional)}
-            className="group relative cursor-pointer flex items-center gap-1 px-2 py-2.5 rounded-lg bg-[var(--primary)] text-white font-medium hover:bg-[var(--secondary)] transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
+            className="group relative cursor-pointer flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold shadow-lg hover:shadow-xl hover:shadow-[var(--primary)]/30 hover:scale-[1.02] active:scale-[0.98] transform transition-all duration-300 ease-out overflow-hidden"
             aria-label={t('dashboard.viewDetails')}
           >
-            <Eye className="w-4 h-4 transition-transform group-hover:scale-110" />
-            <span className="text-sm hidden sm:inline">{t('dashboard.viewDetails')}</span>
-            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap sm:hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--secondary)] to-[var(--primary)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+            <Eye className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3" />
+            <span className="text-sm hidden sm:inline relative z-10">{t('dashboard.viewDetails')}</span>
+            <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap sm:hidden shadow-lg z-20">
               {t('dashboard.viewDetails')}
             </span>
           </button>
           
-        <div className="flex gap-3">
-        <button
-            onClick={(e) => {
-              e.stopPropagation()
-              setIsUpdateModalOpen(true)
-            }}
-            className="group cursor-pointer relative flex items-center gap-1 px-2 py-2.5 rounded-lg bg-[var(--accent)] text-[var(--primary)] font-medium hover:bg-[var(--primary)] hover:text-white transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-[var(--primary)]/20"
-            aria-label={t('dashboard.updateProfessional')}
-            disabled={updateProfessionalMutation.isPending}
-          >
-            <Pencil className="w-4 h-4 transition-transform group-hover:scale-110" />
-            <span className="text-sm hidden sm:inline">{t('dashboard.updateProfessional')}</span>
-            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap sm:hidden">
-              {t('dashboard.updateProfessional')}
-            </span>
-            {updateProfessionalMutation.isPending && (
-              <span className="absolute inset-0 flex items-center justify-center bg-[var(--primary)]/50 rounded-lg">
-                <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+          <div className="flex gap-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsUpdateModalOpen(true)
+              }}
+              className="group cursor-pointer relative flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-[var(--primary)] font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-[var(--primary)]/20 hover:scale-[1.02] active:scale-[0.98] transform border-2 border-[var(--primary)]/30 hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+              aria-label={t('dashboard.updateProfessional')}
+              disabled={updateProfessionalMutation.isPending}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+              <Pencil className="w-4 h-4 relative z-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12 group-hover:text-white" />
+              <span className="text-sm hidden sm:inline relative z-10 transition-colors duration-300 group-hover:text-white">{t('dashboard.updateProfessional')}</span>
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap sm:hidden shadow-lg z-20">
+                {t('dashboard.updateProfessional')}
               </span>
-            )}
-          </button>
-        
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              setIsDeleteModalOpen(true)
-            }}
-            className="cursor-pointer group relative flex items-center gap-1 px-2 py-2.5 rounded-lg bg-red-50 text-red-600 font-medium hover:bg-red-600 hover:text-white transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-200 hover:border-red-600"
-            aria-label={t('dashboard.deleteProfessional')}
-            disabled={deleteProfessionalMutation.isPending}
-          >
-            <Trash2 className="w-4 h-4 transition-transform group-hover:scale-110" />
-            <span className="text-sm hidden sm:inline">{t('dashboard.deleteProfessional')}</span>
-            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap sm:hidden">
-              {t('dashboard.deleteProfessional')}
-            </span>
-            {deleteProfessionalMutation.isPending && (
-              <span className="absolute inset-0 flex items-center justify-center bg-red-600/50 rounded-lg">
-                <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+              {updateProfessionalMutation.isPending && (
+                <span className="absolute inset-0 pointer-events-none flex items-center justify-center bg-gradient-to-r from-[var(--primary)]/80 to-[var(--secondary)]/80 backdrop-blur-sm rounded-xl z-10">
+                  <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+                </span>
+              )}
+            </button>
+          
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsDeleteModalOpen(true)
+              }}
+              className="group cursor-pointer relative flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-50 to-red-100 text-red-600 font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-red-500/30 hover:scale-[1.02] active:scale-[0.98] transform border-2 border-red-200 hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+              aria-label={t('dashboard.deleteProfessional')}
+              disabled={deleteProfessionalMutation.isPending}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+              <Trash2 className="w-4 h-4 relative z-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12 group-hover:text-white" />
+              <span className="text-sm hidden sm:inline relative z-10 transition-colors duration-300 group-hover:text-white">{t('dashboard.deleteProfessional')}</span>
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap sm:hidden shadow-lg z-20">
+                {t('dashboard.deleteProfessional')}
               </span>
-            )}
-          </button>
-        </div>
+              {deleteProfessionalMutation.isPending && (
+                <span className="absolute inset-0 pointer-events-none flex items-center justify-center bg-gradient-to-r from-red-600/80 to-red-700/80 backdrop-blur-sm rounded-xl z-10">
+                  <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+                </span>
+              )}
+            </button>
+          </div>
         </div>
       </div>
       <DeleteConfirmModal
