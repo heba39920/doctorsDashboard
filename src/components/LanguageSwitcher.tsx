@@ -60,7 +60,7 @@ export const LanguageSwitcher = () => {
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 bg-[var(--accent)] rounded-lg hover:bg-[var(--primary)] hover:text-white transition-colors"
+        className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary)] rounded-lg hover:bg-[var(--primary)] hover:text-white transition-colors"
         aria-label="Change language"
       >
         <Globe className="w-4 h-4" />

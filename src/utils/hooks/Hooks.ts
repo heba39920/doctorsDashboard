@@ -1,62 +1,88 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createDoctor, deleteDoctor, getDoctorById, getDoctors, updateDoctor } from '../../services/Apis/DoctorsApis'
-import type { DoctorData } from '../../interfaces/interfaces'
+import { createProfessional, deleteProfessional, getProfessionalById, getProfessionals, searchByType, searchBySpecialization, updateProfessional, getStats, getAllTypes } from '../../services/Apis/ProfessionalsApis'
+import type { professionalData } from '../../interfaces/interfaces'
 
-export const useGetDoctors = () => {
+export const useGetProfessionals = () => {
     return useQuery({
-        queryKey: ['doctors'],
-        queryFn: getDoctors
+        queryKey: ['professionals'],
+        queryFn: getProfessionals
     })
 }
 
-export const useCreateDoctor = () => {
+export const useCreateProfessional = () => {
     const queryClient = useQueryClient()
     
     return useMutation({
-        mutationFn: (formData: FormData) => createDoctor(formData),
+        mutationFn: (formData: FormData) => createProfessional(formData),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['doctors'] })
+            queryClient.invalidateQueries({ queryKey: ['professionals'] })
         },
         onError: (error: Error) => {
-            console.error('Error creating doctor:', error)
+            console.error('Error creating professional:', error)
         }
     })
 }
 
-export const useGetDoctorById = (id: string, enabled: boolean = true) => {
+export const useGetProfessionalById = (id: string, enabled: boolean = true) => {
     return useQuery({
-        queryKey: ['doctor', id],
-        queryFn: () => getDoctorById(id),
+        queryKey: ['professional', id],
+        queryFn: () => getProfessionalById(id),
         enabled: !!id && enabled
     })
 }
 
-export const useUpdateDoctor = () => {
+export const useUpdateProfessional = () => {
     const queryClient = useQueryClient()
     
     return useMutation({
-        mutationFn: ({ id, data }: { id: string; data: Partial<DoctorData> }) => updateDoctor(id, data),
+        mutationFn: ({ id, data }: { id: string; data: Partial<professionalData> }) => updateProfessional(id, data),
         onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: ['doctors'] })
-            queryClient.invalidateQueries({ queryKey: ['doctor', variables.id] })
+            queryClient.invalidateQueries({ queryKey: ['professionals'] })
+            queryClient.invalidateQueries({ queryKey: ['professional', variables.id] })
         },
         onError: (error: Error) => {
-            console.error('Error updating doctor:', error)
+            console.error('Error updating professional:', error)
         }
     })
 }
 
-export const useDeleteDoctor = () => {
+export const useDeleteProfessional = () => {
     const queryClient = useQueryClient()
     
     return useMutation({
-        mutationFn: (id: string) => deleteDoctor(id),
+        mutationFn: (id: string) => deleteProfessional(id),
         onSuccess: (_, id) => {
-            queryClient.invalidateQueries({ queryKey: ['doctors'] })
-            queryClient.removeQueries({ queryKey: ['doctor', id] })
+            queryClient.invalidateQueries({ queryKey: ['professionals'] })
+            queryClient.removeQueries({ queryKey: ['professional', id] })
         },
         onError: (error: Error) => {
-            console.error('Error deleting doctor:', error)
+            console.error('Error deleting professional:', error)
         }
+    })
+}
+export const useSearchByType = (professional_type: string) => {
+    return useQuery({
+        queryKey: ['searchByType', professional_type],
+        queryFn: () => searchByType(professional_type),
+        enabled: !!professional_type && professional_type.trim() !== ''
+    })
+}
+export const useSearchBySpecialization = (specialization: string) => {
+    return useQuery({
+        queryKey: ['searchBySpecialization', specialization],
+        queryFn: () => searchBySpecialization(specialization),
+        enabled: !!specialization && specialization.trim() !== ''
+    })
+}
+export const useGetStats = () => {
+    return useQuery({
+        queryKey: ['stats'],
+        queryFn: getStats
+    })
+}
+export const useGetAllTypes = () => {
+    return useQuery({
+        queryKey: ['allTypes'],
+        queryFn: getAllTypes
     })
 }

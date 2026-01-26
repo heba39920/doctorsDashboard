@@ -1,4 +1,4 @@
-import type { DoctorData, DoctorListItem, Doctor } from "../../interfaces/interfaces"
+import type { professionalData, professionalListItem, professional } from "../../interfaces/interfaces"
 
 /**
  * Helper function to get "Not specified" text based on current language
@@ -11,15 +11,15 @@ const getNotSpecified = (): string => {
 /**
  * Convert API DoctorData to legacy Doctor format for backward compatibility
  */
-export const convertDoctorDataToLegacy = (data: DoctorData): Doctor => {
+export const convertProfessionalDataToLegacy = (data: professionalData): professional => {
   const notSpecified = getNotSpecified()
   return {
-    id: data.doctor_id,
+    id: data.professional_id,
     name: data.name,
     email: data.email || null,
     phone: data.phone || null,
     specialization: data.specializations?.[0] || notSpecified,
-    location: data.hospital_affiliations?.[0] || notSpecified,
+    location: data.work_places?.[0]?.workplace_name || notSpecified,
     experience: data.years_of_experience ? `${data.years_of_experience} years` : notSpecified,
     joinDate: data.created_at,
     filesCount: data.uploaded_files?.length || 0,
@@ -29,10 +29,10 @@ export const convertDoctorDataToLegacy = (data: DoctorData): Doctor => {
 /**
  * Convert API DoctorListItem to legacy Doctor format
  */
-export const convertDoctorListItemToLegacy = (item: DoctorListItem): Doctor => {
+export const convertProfessionalListItemToLegacy = (item: professionalListItem): professional => {
   const notSpecified = getNotSpecified()
   return {
-    id: item.doctor_id,
+    id: item.professional_id,
     name: item.name,
     email: item.email || null,
     phone: item.phone || null,

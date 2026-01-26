@@ -4,9 +4,9 @@ import { useState } from "react";
 
 const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const isRTL = localStorage.getItem('language') === 'ar';
   return (
-    <div className="flex min-h-screen bg-[var(--background)]">
+    <div className={`flex min-h-screen bg-[var(--background)] ${isRTL ? 'text-right' : 'text-left'}`}>
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       {isSidebarOpen && (
         <div

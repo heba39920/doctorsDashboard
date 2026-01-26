@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
 import Analytics from "./pages/Analytics"
-import DoctorDetails from "./pages/DoctorDetails"
+import ProfessionalDetails from "./pages/ProfessionalDetails"
 import Layout from "./components/layout/Layout"
 
 function App() {
@@ -24,8 +24,8 @@ const routes = createBrowserRouter([
         element: <Analytics />,
       },
       {
-        path: "/doctor/:id",
-        element: <DoctorDetails />,
+        path: "/professional/:id",
+        element: <ProfessionalDetails />,
       },
     ],
   },

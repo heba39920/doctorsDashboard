@@ -12,13 +12,13 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className={`bg-[var(--surface)] text-[var(--textPrimary)] w-1/2 md:w-25 h-screen py-5 px-1 border-r border-[var(--accent)] flex flex-col fixed left-0 z-50 transition-transform duration-300 ${
+    <div className={`bg-[var(--textPrimary)] text-[var(--background)] w-1/2 md:w-25 h-screen py-5 px-1 border-r border-[var(--accent)] flex flex-col fixed left-0 z-50 transition-transform duration-300 ${
       isOpen ? 'translate-x-0' : '-translate-x-full'
     } md:translate-x-0`}>
       <div className="mb-8">
         <div className="flex items-center gap-1 justify-center md:justify-start">
-          <Stethoscope className="w-10 h-10 text-[var(--primary)]" />
-          <h6 className="text-xs font-bold text-[var(--primary)] mb-1">SCFHS.</h6>
+          <Stethoscope className="w-10 h-10 text-[var(--background)]" />
+          <h6 className="text-xs font-bold text-[var(--background)] mb-1">SCFHS.</h6>
         </div>
       </div>
       <nav className="flex-1">
@@ -30,13 +30,13 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               className={({ isActive }) =>
                 `flex md:flex-col md:justify-center justify-start md:px-0 px-2 items-center rounded-xl gap-3 md:py-3 py-2 text-xs  transition-all duration-200 ${
                   isActive
-                    ? ' text-(--primary) text-shadow-lg shadow-black'
-                    : ' text-[var(--textPrimary)] hover:bg-(--accent)'
+                    ? ' text-(--primary) '
+                    : ' text-[var(--background)] hover:bg-(--secondary)'
                 }`
               }
             >
               <UserPlus size={20} />
-              <span className="font-medium">{t('sidebar.addDoctor')}</span>
+              <span className="font-medium">{t('sidebar.addProfessional')}</span>
             </NavLink>
           </li>
           <li>
@@ -46,8 +46,8 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               className={({ isActive }) =>
                 `flex md:flex-col md:justify-center justify-start md:px-0 px-2 items-center text-xs gap-3 md:py-3 py-2 rounded-xl transition-all duration-200 ${
                   isActive
-                    ? ' text-(--primary) text-shadow-lg shadow-black'
-                    : ' text-[var(--textPrimary)] hover:bg-(--accent)'
+                    ? ' text-(--primary) '
+                    : ' text-[var(--background)] hover:bg-(--secondary)'
                 }`
               }
             >
@@ -62,8 +62,8 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               className={({ isActive }) =>
                   `flex md:flex-col md:justify-center justify-start md:px-0 px-2 items-center text-xs gap-3 md:py-3 py-2 rounded-xl transition-all duration-200 ${
                     isActive
-                      ? ' text-(--primary) text-shadow-lg shadow-black'
-                      : ' text-[var(--textPrimary)] hover:bg-(--accent)'
+                      ? 'text-(--primary)'
+                      : 'text-[var(--background)] hover:bg-(--secondary)'
                   }`
                 }>
                 <BarChart3 size={20} />
@@ -72,11 +72,11 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           </li>
         </ul>
       </nav>
-      <div className="mt-auto pt-4 border-t border-[var(--accent)] space-y-3">
+      <div className="mt-auto pt-4 border-t border-[var(--secondary)] space-y-3">
         <div className="flex justify-center">
           <LanguageSwitcher />
         </div>
-        <p className="text-xs text-[var(--textSecondary)] text-center">
+        <p className="text-xs text-[var(--background)] text-center">
           {t('sidebar.copyright')}
         </p>
       </div>

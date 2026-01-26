@@ -1,13 +1,12 @@
 import { FileText, Upload, X, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
-import { useForm } from "react-hook-form"
 import { useRef, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { useCreateDoctor } from "../utils/hooks/Hooks"
+import { useCreateProfessional } from "../utils/hooks/Hooks"
 import { useNavigate } from "react-router-dom"
 
-interface FormData {
-  name: string
-}
+// Static values to send to backend
+const STATIC_NAME = "Professional Name"
+const STATIC_PROFESSIONAL_TYPE = "doctor" // Change this to your desired default professional type value
 
 interface FileWithId {
   id: string
@@ -16,7 +15,6 @@ interface FileWithId {
 
 export const Form = () => {
     const { t } = useTranslation()
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>()
     const [isDragging, setIsDragging] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState<FileWithId[]>([])
     const [successMessage, setSuccessMessage] = useState<string>("")
@@ -24,8 +22,7 @@ export const Form = () => {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const navigate = useNavigate()
     
-    const createDoctorMutation = useCreateDoctor()
-  
+    const createProfessionalMutation = useCreateProfessional()
     const handleFileSelect = (files: FileList | null) => {
       if (!files) return
       
@@ -41,7 +38,9 @@ export const Form = () => {
       setSelectedFiles(prev => prev.filter(f => f.id !== id))
     }
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = (e: React.FormEvent) => {
+      e.preventDefault()
+      
       if (selectedFiles.length === 0) {
         setErrorMessage(t('form.pleaseSelectFile'))
         return
@@ -51,16 +50,17 @@ export const Form = () => {
       setSuccessMessage("")
 
       const formData = new FormData()
-      formData.append("name", data.name)
+      // Send static values
+      formData.append("name", STATIC_NAME)
+      formData.append("professional_type", STATIC_PROFESSIONAL_TYPE)
       
       selectedFiles.forEach((fileWithId) => {
         formData.append("files", fileWithId.file)
       })
 
-      createDoctorMutation.mutate(formData, {
+      createProfessionalMutation.mutate(formData, {
         onSuccess: (response) => {
-          setSuccessMessage(response.message || t('form.doctorCreatedSuccess'))
-          reset()
+          setSuccessMessage(response.message || t('form.professionalCreatedSuccess'))
           setSelectedFiles([])
           if (fileInputRef.current) {
             fileInputRef.current.value = ""
@@ -71,7 +71,7 @@ export const Form = () => {
           }, 2000)
         },
         onError: (error: Error) => {
-          setErrorMessage(error.message || t('form.failedToCreate'))
+          setErrorMessage(error.message || t('form.failedToCreateProfessional'))
         }
       })
     }
@@ -92,23 +92,7 @@ export const Form = () => {
 
   return (
     <div className="bg-[var(--surface)] text-[var(--textBlack)] flex min-h-screen justify-center items-start pt-10 pb-10">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 mt-10 w-full max-w-2xl px-4">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="name" className="text-sm font-medium text-[var(--textPrimary)]">
-            {t('form.doctorName')}
-          </label>
-          <input 
-            type="text" 
-            id="name" 
-            {...register("name", { required: t('form.nameRequired') })}  
-            className="text-sm w-full p-3 rounded-xl border-2 border-[var(--primary)] placeholder:text-[var(--textSecondary)] focus:border-[var(--secondary)] focus:ring-2 focus:ring-[var(--accent)] outline-none transition-all"
-            placeholder={t('form.enterDoctorName')}
-          />
-          {errors.name && (
-            <span className="text-red-500 text-sm">{errors.name.message}</span>
-          )}
-        </div>
-
+      <form onSubmit={onSubmit} className="flex flex-col gap-6 mt-10 w-full max-w-2xl px-4">
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-[var(--textPrimary)]">
             {t('form.uploadFiles')}
@@ -213,12 +197,12 @@ export const Form = () => {
         <button
           type="submit"
           className="w-full py-3 px-6 bg-[var(--primary)] text-white font-medium rounded-xl hover:bg-[var(--secondary)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          disabled={selectedFiles.length === 0 || createDoctorMutation.isPending}
+          disabled={selectedFiles.length === 0 || createProfessionalMutation.isPending}
         >
-          {createDoctorMutation.isPending ? (
+          {createProfessionalMutation.isPending ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              {t('form.creating')}
+              {t('form.creatingProfessional')}
             </>
           ) : (
             t('common.submit')

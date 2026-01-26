@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://195.35.3.228:8000/api"
+const baseUrl = "https://testdevelopment.top:7330/api"
 export const axiosInstance = axios.create({
     baseURL: baseUrl,
   });
@@ -39,10 +39,14 @@ export const axiosInstance = axios.create({
       return Promise.reject(error);
     }
   );
-export const  DOCTORS= {
-    GET_ALL_DOCTORS: `${baseUrl}/doctors`,
-    GET_DOCTOR_BY_ID: (id:string)=> `${baseUrl}/doctors/${id}`,
-    CREATE_DOCTOR: `${baseUrl}/doctors/upload`,
-    UPDATE_DOCTOR:(id:string)=> `${baseUrl}/doctors/${id}`,
-    DELETE_DOCTOR: (id:string)=> `${baseUrl}/doctors/${id}`
+export const  PROFESSIONALS= {
+    GET_ALL_TYPES: `${baseUrl}/professional-types`,
+    GET_ALL_PROFESSIONALS: `${baseUrl}/professionals`,
+    GET_PROFESSIONAL_BY_ID: (id:string)=> `${baseUrl}/professionals/${id}`,
+    CREATE_PROFESSIONAL: `${baseUrl}/professionals/upload`,
+    UPDATE_PROFESSIONAL:(id:string)=> `${baseUrl}/professionals/${id}`,
+    DELETE_PROFESSIONAL: (id:string)=> `${baseUrl}/professionals/${id}`,
+    SEARCH_BY_TYPE:(professional_type:string)=> `${baseUrl}/professionals/search/by-type?professional_type=${professional_type}`,
+    SEARCH_BY_SPECIALIZATION:(specialization:string)=> `${baseUrl}/professionals/search/by-specialization?specialization=${specialization}`,
+    GET_STATS:`${baseUrl}/stats`
 }

@@ -15,10 +15,10 @@ const Home = () => {
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold text-[var(--textPrimary)]">
-                                {t('home.addNewDoctor')}
+                                {t('home.addNewProfessional')}
                             </h1>
                             <p className="text-sm text-[var(--textSecondary)]">
-                                {t('home.registerDoctor')}
+                                {t('home.registerProfessional')}
                             </p>
                         </div>
                     </div>

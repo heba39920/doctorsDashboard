@@ -5,11 +5,11 @@ interface DeleteConfirmModalProps {
   isOpen: boolean
   onClose: () => void
   onConfirm: () => void
-  doctorName: string
+  professionalName: string
   isDeleting?: boolean
 }
 
-export const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, doctorName, isDeleting = false }: DeleteConfirmModalProps) => {
+export const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, professionalName, isDeleting = false }: DeleteConfirmModalProps) => {
   const { t } = useTranslation()
 
   if (!isOpen) return null
@@ -30,7 +30,7 @@ export const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, doctorName, isD
             </div>
             <div className="flex-1">
               <h2 className="text-xl font-bold text-[var(--textPrimary)]">
-                {t('doctorDetails.deleteDoctor')}
+                {t('professionalDetails.deleteProfessional')}
               </h2>
             </div>
             <button
@@ -43,13 +43,13 @@ export const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, doctorName, isD
           </div>
 
           <p className="text-[var(--textSecondary)] mb-2">
-            {t('doctorDetails.confirmDelete')}
+            {t('professionalDetails.confirmDelete')}
           </p>
           <p className="font-semibold text-[var(--textPrimary)] mb-4">
-            {doctorName}
+            {professionalName}
           </p>
           <p className="text-sm text-red-600 mb-6">
-            {t('doctorDetails.deleteConfirmMessage')}
+            {t('professionalDetails.deleteConfirmMessage')}
           </p>
 
           <div className="flex gap-3">
@@ -68,7 +68,7 @@ export const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, doctorName, isD
               {isDeleting ? (
                 <>
                   <span className="animate-spin">⏳</span>
-                  {t('doctorDetails.deleting')}
+                  {t('professionalDetails.deleting')}
                 </>
               ) : (
                 t('common.delete')
