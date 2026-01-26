@@ -51,6 +51,11 @@ const Dashboard = () => {
   const hasTypeSearch = selectedType && selectedType.trim() !== ""
   const hasSpecializationSearch = specialization && specialization.trim() !== ""
 
+  // Helper to get original item for a professional
+  const getOriginalItem = (prof: professional): professionalListItem & { professional_type?: string; job_title?: string | null; current_workplace?: string | null } | undefined => {
+    return data?.professionals?.find((item: professionalListItem) => item.professional_id === prof.id) as professionalListItem & { professional_type?: string; job_title?: string | null; current_workplace?: string | null } | undefined
+  }
+
   if (hasTypeSearch && hasSpecializationSearch) {
     // Both searches active - combine results intelligently
     isSearching = true
@@ -156,6 +161,12 @@ const Dashboard = () => {
     // No search active
     professionalsToShow = allProfessionals
   }
+
+  // Create final list with original items for rendering
+  const professionalsForRendering = professionalsToShow.map(prof => ({
+    professional: prof,
+    original: getOriginalItem(prof)
+  }))
 
   const handleClearType = () => {
     setSelectedType("")
@@ -356,8 +367,13 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {professionalsToShow.map((professional) => (
-              <ProfessionalCard key={professional.id} professional={professional} onViewDetails={handleViewDetails} />
+            {professionalsForRendering.map(({ professional, original }) => (
+              <ProfessionalCard 
+                key={professional.id} 
+                professional={professional} 
+                onViewDetails={handleViewDetails}
+                originalItem={original}
+              />
             ))}
           </div>
         )}

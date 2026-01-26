@@ -1,7 +1,7 @@
-import { User, Mail, Phone, MapPin, Calendar, Award,  Pencil, Trash2, Eye } from "lucide-react"
+import { User, Mail, Phone, Calendar, Award, Pencil, Trash2, Eye, IdCard, Briefcase, Building2, Hash } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { formatValue } from "../../utils/helperfunctions/ProfessionalUtils"
-import type { professional, professionalData } from "../../interfaces/interfaces"
+import type { professional, professionalData, professionalListItem } from "../../interfaces/interfaces"
 import { useUpdateProfessional, useDeleteProfessional, useGetProfessionalById } from "../../utils/hooks/Hooks"
 import { toast } from "react-toastify"
 import { useState } from "react"
@@ -11,9 +11,10 @@ import { EditProfessionalModal } from "../EditProfessionalModal"
 interface ProfessionalCardProps {
   professional: professional
   onViewDetails: (professional: professional) => void
+  originalItem?: professionalListItem & { professional_type?: string; job_title?: string | null; current_workplace?: string | null }
 }
 
-const ProfessionalCard = ({ professional, onViewDetails }: ProfessionalCardProps) => {
+const ProfessionalCard = ({ professional, onViewDetails, originalItem }: ProfessionalCardProps) => {
   const { t } = useTranslation()
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -21,6 +22,17 @@ const ProfessionalCard = ({ professional, onViewDetails }: ProfessionalCardProps
   // Fetch full doctor data only when edit modal is open
   const { data: professionalDataResponse } = useGetProfessionalById(professional.id, isUpdateModalOpen)
   const professionalData = professionalDataResponse?.data || null
+
+  // Extract properties from originalItem or professional
+  const professionalId = originalItem?.professional_id || professional.id
+  const professionalType = originalItem?.professional_type
+  const jobTitle = originalItem?.job_title
+  const specializations = originalItem?.specializations || []
+  const yearsOfExperience = originalItem?.years_of_experience
+  const currentWorkplace = originalItem?.current_workplace
+  const phone = originalItem?.phone || professional.phone
+  const email = originalItem?.email || professional.email
+  const createdAt = originalItem?.created_at || professional.joinDate
 
   const updateProfessionalMutation = useUpdateProfessional()
   const handleUpdate = (updateData: Partial<professionalData>) => {
@@ -53,8 +65,9 @@ const ProfessionalCard = ({ professional, onViewDetails }: ProfessionalCardProps
     })
   }
   return (
-    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 py-6 px-4 border border-[var(--accent)] hover:border-[var(--primary)]">
-      <div className="flex items-start justify-between mb-4">
+    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 py-6 px-4 border border-[var(--accent)] hover:border-[var(--primary)]v flex flex-col justify-between">
+    <div>
+    <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-[var(--accent)] flex items-center justify-center flex-shrink-0">
             <User className="w-8 h-8 text-[var(--primary)]" />
@@ -75,26 +88,78 @@ const ProfessionalCard = ({ professional, onViewDetails }: ProfessionalCardProps
       </div>
 
       <div className="space-y-3 mb-4">
-        <div className="flex items-center gap-3 text-sm">
-          <Mail className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
-          <span className="text-[var(--textPrimary)] truncate">{formatValue(professional.email)}</span>
-        </div>
-        <div className="flex items-center gap-3 text-sm">
-          <Phone className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
-          <span className="text-[var(--textPrimary)]">{formatValue(professional.phone)}</span>
-        </div>
-        <div className="flex items-center gap-3 text-sm">
-          <MapPin className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
-          <span className="text-[var(--textPrimary)]">{formatValue(professional.location)}</span>
-        </div>
-        <div className="flex items-center gap-3 text-sm">
-          <Calendar className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
-          <span className="text-[var(--textPrimary)]">
-            {t('professionalDetails.experience')}: {formatValue(professional.experience)} | {t('professionalDetails.joinDate')}: {new Date(professional.joinDate).toLocaleDateString()}
-          </span>
-        </div>
+        {professionalId && (
+          <div className="flex items-center gap-3 text-sm">
+            <Hash className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
+            <span className="text-[var(--textPrimary)]">
+              {t('professionalDetails.professionalId')}: {professionalId}
+            </span>
+          </div>
+        )}
+        {professionalType && (
+          <div className="flex items-center gap-3 text-sm">
+            <IdCard className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
+            <span className="text-[var(--textPrimary)]">
+              {t('professionalDetails.professionalType')}: {formatValue(professionalType)}
+            </span>
+          </div>
+        )}
+        {jobTitle && (
+          <div className="flex items-center gap-3 text-sm">
+            <Briefcase className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
+            <span className="text-[var(--textPrimary)]">
+              {t('professionalDetails.jobTitle')}: {formatValue(jobTitle)}
+            </span>
+          </div>
+        )}
+        {specializations && specializations.length > 0 && (
+          <div className="flex items-start gap-3 text-sm">
+            <Award className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <span className="text-[var(--textPrimary)] font-medium">{t('professionalDetails.specialization')}: </span>
+              <span className="text-[var(--textPrimary)]">{specializations.join(", ")}</span>
+            </div>
+          </div>
+        )}
+        {yearsOfExperience !== null && yearsOfExperience !== undefined && (
+          <div className="flex items-center gap-3 text-sm">
+            <Calendar className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
+            <span className="text-[var(--textPrimary)]">
+              {t('professionalDetails.experience')}: {yearsOfExperience} {t('common.years')}
+            </span>
+          </div>
+        )}
+        {currentWorkplace && (
+          <div className="flex items-center gap-3 text-sm">
+            <Building2 className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
+            <span className="text-[var(--textPrimary)]">
+              {t('professionalDetails.currentWorkplace')}: {formatValue(currentWorkplace)}
+            </span>
+          </div>
+        )}
+        {email && (
+          <div className="flex items-center gap-3 text-sm">
+            <Mail className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
+            <span className="text-[var(--textPrimary)] truncate">{formatValue(email)}</span>
+          </div>
+        )}
+        {phone && (
+          <div className="flex items-center gap-3 text-sm">
+            <Phone className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
+            <span className="text-[var(--textPrimary)]">{formatValue(phone)}</span>
+          </div>
+        )}
+        {createdAt && (
+          <div className="flex items-center gap-3 text-sm">
+            <Calendar className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0" />
+            <span className="text-[var(--textPrimary)]">
+              {t('professionalDetails.joinDate')}: {new Date(createdAt).toLocaleDateString()}
+            </span>
+          </div>
+        )}
       </div>
-      <div className="pt-4 border-t border-[var(--accent)]">
+    </div>
+      <div className="pt-4 border-t border-[var(--accent)] ">
         <div className="flex items-center gap-2 flex-wrap justify-between">
           <button
             onClick={() => onViewDetails(professional)}
