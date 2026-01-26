@@ -1,11 +1,14 @@
-import { BarChart3, Users, FileText, TrendingUp, Award, Calendar, Loader2, AlertCircle } from "lucide-react"
+import { BarChart3, Users, FileText, TrendingUp, Award, Calendar, Loader2, AlertCircle, Menu } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useGetStats } from "../utils/hooks/Hooks"
 import { formatValue } from "../utils/helperfunctions/ProfessionalUtils"
+import { useSidebar } from "../contexts/SidebarContext"
 
 const Analytics = () => {
   const { t } = useTranslation()
+  const { openSidebar } = useSidebar()
   const { data: statsData, isLoading, isError, error } = useGetStats()
+  const isRTL = localStorage.getItem('language') === 'ar';
   
   if (isLoading) {
     return (
@@ -51,21 +54,32 @@ const Analytics = () => {
   // Get professional types distribution
   const professionalTypes = Object.entries(statsData.by_professional_type)
     .sort(([, a], [, b]) => b - a)
-const isRTL = localStorage.getItem('language') === 'ar';
+  
   return (
     <div className="min-h-screen bg-[var(--surface)] p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <div className={`flex items-center gap-3 mb-2 ${isRTL ? 'justify-end' : 'justify-start'}`}>
-            <BarChart3 className="w-8 h-8 text-[var(--primary)]" />
-            <h1 className="text-2xl font-bold text-[var(--textPrimary)]">
-              {t('analytics.title')}
-            </h1>
+        <div className="mb-8 bg-white rounded-xl border border-[var(--accent)] shadow-sm p-6">
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <div className={`flex items-center gap-3 mb-2 ${isRTL ? 'justify-end' : 'justify-start'}`}>
+                <BarChart3 className="w-8 h-8 text-[var(--primary)]" />
+                <h1 className="text-2xl font-bold text-[var(--textPrimary)]">
+                  {t('analytics.title')}
+                </h1>
+              </div>
+              <p className="text-[var(--textSecondary)]">
+                {t('analytics.subtitle')}
+              </p>
+            </div>
+            <button
+              onClick={openSidebar}
+              className={`md:hidden p-3 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 ${isRTL ? 'ml-4' : 'mr-4'}`}
+              aria-label={t('sidebar.openMenu')}
+            >
+              <Menu className="w-6 h-6" />
+            </button>
           </div>
-          <p className="text-[var(--textSecondary)]">
-            {t('analytics.subtitle')}
-          </p>
         </div>
 
         {/* Key Metrics Cards */}

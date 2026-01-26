@@ -3,19 +3,14 @@
 
 // SCFHS License interface
 export interface SCFHSLicense {
-  license_number: string
-  license_type: string
-  issue_date: string
-  expiry_date: string
-  classification: string
-}
+    license_number: string
+    license_type: string
+    issue_date: string
+    expiry_date: string
+    classification: string
+  }
 
-// Other License interface
-export interface OtherLicense {
-  issuer: string
-  license_number: string
-  expiry: string
-}
+
 
 // Training Course interface
 export interface TrainingCourse {
@@ -49,7 +44,7 @@ export interface professionalData {
   professional_journey_arabic: string | null
   degrees_and_certificates: string[] | null
   scfhs_license: SCFHSLicense | null
-  other_licenses: OtherLicense[] | null
+  other_licenses: string[] | null
   languages: string[] | null
   certifications: string[] | null
   training_courses: TrainingCourse[] | null

@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom"
-  import { Loader2, AlertCircle, Search, X } from "lucide-react"
+  import { Loader2, AlertCircle, Search, X, Menu } from "lucide-react"
   import { useTranslation } from "react-i18next"
 import { useGetProfessionals, useSearchByType, useSearchBySpecialization, useGetAllTypes } from "../utils/hooks/Hooks"
 import { convertProfessionalListItemToLegacy } from "../utils/helperfunctions/ProfessionalUtils"
 import type { professional, professionalListItem } from "../interfaces/interfaces"
 import ProfessionalCard from "../components/ProfessionalsComponents/ProfessionalCard"
 import { useState } from "react"
+import { useSidebar } from "../contexts/SidebarContext"
 const Dashboard = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { openSidebar } = useSidebar()
   const { data, isLoading, isError, error } = useGetProfessionals()
   const [selectedType, setSelectedType] = useState<string>("")
   const [specialization, setSpecialization] = useState<string>("")
@@ -215,13 +217,24 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[var(--surface)] p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className={`text-2xl font-bold text-[var(--textPrimary)] mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-            {t('dashboard.title')}
-          </h1>
-          <p className={`text-[var(--textSecondary)] ${isRTL ? 'text-right' : 'text-left'}`}>
-            {t('dashboard.subtitle')}
-          </p>
+        <div className="mb-8 bg-white rounded-xl border border-[var(--accent)] shadow-sm p-6">
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <h1 className="text-2xl font-bold text-[var(--textPrimary)] mb-2">
+                {t('dashboard.title')}
+              </h1>
+              <p className="text-[var(--textSecondary)]">
+                {t('dashboard.subtitle')}
+              </p>
+            </div>
+            <button
+              onClick={openSidebar}
+              className={`md:hidden p-3 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 ${isRTL ? 'ml-4' : 'mr-4'}`}
+              aria-label={t('sidebar.openMenu')}
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
         </div>
 
         <div className={`mb-6 flex items-center justify-between flex-wrap gap-4 ${isRTL ? 'justify-end' : 'justify-start'}`}>

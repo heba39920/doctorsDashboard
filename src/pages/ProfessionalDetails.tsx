@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { ArrowLeft, User, Mail, Phone, Award, FileText, Briefcase, Building2, Calendar, Star, Loader2, AlertCircle, Trash2, Edit, IdCard, GraduationCap, Shield, BookOpen, Trophy, BookMarked, BriefcaseBusiness, DollarSign, Clock, Code, AlertTriangle } from "lucide-react"
+import { ArrowLeft, User, Mail, Phone, Award, FileText, Briefcase, Building2, Calendar, Star, Loader2, AlertCircle, Trash2, Edit, IdCard, GraduationCap, Shield, BookOpen, Trophy, BookMarked, BriefcaseBusiness, DollarSign, Clock, Code, AlertTriangle, Menu } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useGetProfessionalById, useDeleteProfessional, useUpdateProfessional } from "../utils/hooks/Hooks"
 import { convertProfessionalDataToLegacy, formatValue } from "../utils/helperfunctions/ProfessionalUtils"
@@ -7,12 +7,15 @@ import { DeleteConfirmModal } from "../components/DeleteConfirmModal"
 import { EditProfessionalModal } from "../components/EditProfessionalModal"
 import { useState } from "react"
 import type { professionalData } from "../interfaces/interfaces"
+import { useSidebar } from "../contexts/SidebarContext"
 
 const ProfessionalDetails = () => {
   const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { openSidebar } = useSidebar()
   const { data, isLoading, isError, error } = useGetProfessionalById(id || "")
+  const isRTL = localStorage.getItem('language') === 'ar';
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   
@@ -85,24 +88,38 @@ const ProfessionalDetails = () => {
   const otherLicenses = professionalData.other_licenses || []
   return (
     <div className="min-h-screen bg-[var(--surface)]">
+      {/* Header Section */}
+      <div className="bg-white border-b border-[var(--accent)] shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className={`flex items-center gap-2 text-[var(--textPrimary)] hover:text-[var(--primary)] transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+            >
+              <ArrowLeft className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
+              <span>{t('professionalDetails.backToDashboard')}</span>
+            </button>
+            <button
+              onClick={openSidebar}
+              className={`md:hidden p-3 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 ${isRTL ? 'ml-4' : 'mr-4'}`}
+              aria-label={t('sidebar.openMenu')}
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </div>
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-[var(--primary)] via-[var(--secondary)] to-[var(--primary)] text-white">
         <div className="max-w-7xl mx-auto px-6 py-16">
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="mb-8 flex items-center gap-2 text-white/90 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>{t('professionalDetails.backToDashboard')}</span>
-          </button>
           
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-4 border-white/30">
               <User className="w-16 h-16 text-white" />
             </div>
-            <div className="flex-1 text-center md:text-left">
+            <div className={`flex-1 text-center ${isRTL ? 'md:text-right' : 'md:text-left'}`}>
               <h1 className="text-5xl font-bold mb-3">{professional.name}</h1>
-              <div className="flex items-center justify-center md:justify-start gap-2 mb-4 flex-wrap">
+              <div className={`flex items-center justify-center gap-2 mb-4 flex-wrap ${isRTL ? 'md:justify-end' : 'md:justify-start'}`}>
                 <Award className="w-6 h-6" />
                 <span className="text-xl">
                   {specializations.length > 0 ? specializations.join(", ") : professional.specialization}
@@ -311,15 +328,14 @@ const ProfessionalDetails = () => {
                     {t('professionalDetails.otherLicenses')}
                   </h3>
                   <div className="space-y-4">
-                    {otherLicenses.map((license, index: number) => (
+                    {otherLicenses.map((license: string, index: number) => (
                       <div key={index} className="p-3 bg-white rounded-lg border border-[var(--accent)]">
-                        {license.issuer && (
+                        {license && (
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.issuer')}:</span>
-                            <span className="text-sm font-medium text-[var(--textPrimary)]">{license.issuer}</span>
+                            <span className="text-sm font-medium text-[var(--textPrimary)]">{license}</span>
                           </div>
                         )}
-                        {license.license_number && (
+                        {/* {license.license_number && (
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.licenseNumber')}:</span>
                             <span className="text-sm font-medium text-[var(--textPrimary)]">{license.license_number}</span>
@@ -330,7 +346,7 @@ const ProfessionalDetails = () => {
                             <span className="text-sm text-[var(--textSecondary)]">{t('professionalDetails.expiry')}:</span>
                             <span className="text-sm font-medium text-[var(--textPrimary)]">{license.expiry}</span>
                           </div>
-                        )}
+                        )} */}
                       </div>
                     ))}
                   </div>
