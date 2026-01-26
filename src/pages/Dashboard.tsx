@@ -12,7 +12,7 @@ const Dashboard = () => {
   const { data, isLoading, isError, error } = useGetProfessionals()
   const [selectedType, setSelectedType] = useState<string>("")
   const [specialization, setSpecialization] = useState<string>("")
-  
+  const isRTL = localStorage.getItem('language') === 'ar';
   const { data: typesData } = useGetAllTypes()
   const { data: typeSearchData, isLoading: typeSearchLoading } = useSearchByType(selectedType)
   const { data: specializationSearchData, isLoading: specializationSearchLoading } = useSearchBySpecialization(specialization)
@@ -22,7 +22,7 @@ const Dashboard = () => {
   }
 
   const allProfessionals = data?.professionals ? data.professionals.map(convertProfessionalListItemToLegacy) : []
-  const totalFiles = allProfessionals.reduce((sum, professional) => sum + professional.filesCount, 0)
+ 
 
   // Helper function to check if specialization matches (case-insensitive, partial match)
   // Checks all specializations in the original data
@@ -216,15 +216,15 @@ const Dashboard = () => {
     <div className="min-h-screen bg-[var(--surface)] p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-[var(--textPrimary)] mb-2">
+          <h1 className={`text-2xl font-bold text-[var(--textPrimary)] mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
             {t('dashboard.title')}
           </h1>
-          <p className="text-[var(--textSecondary)]">
+          <p className={`text-[var(--textSecondary)] ${isRTL ? 'text-right' : 'text-left'}`}>
             {t('dashboard.subtitle')}
           </p>
         </div>
 
-        <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
+        <div className={`mb-6 flex items-center justify-between flex-wrap gap-4 ${isRTL ? 'justify-end' : 'justify-start'}`}>
           <div className="flex items-center gap-4">
             <div className="px-4 py-2 bg-white rounded-lg border border-[var(--accent)]">
               <span className="text-sm text-[var(--textSecondary)]">{t('dashboard.totalProfessionals')}</span>
@@ -232,12 +232,7 @@ const Dashboard = () => {
                 {isSearching ? searchResultsCount : (data?.total || allProfessionals.length)}
               </span>
             </div>
-            <div className="px-4 py-2 bg-white rounded-lg border border-[var(--accent)]">
-              <span className="text-sm text-[var(--textSecondary)]">{t('dashboard.totalFiles')}</span>
-              <span className="ml-2 text-lg font-bold text-[var(--primary)]">
-                {totalFiles}
-              </span>
-            </div>
+           
           </div>
         </div>
 

@@ -16,12 +16,15 @@
     "years": "Years"
   },
   "sidebar": {
- 
     "managementSystem": "Management System",
     "addProfessional": "Add Professional",
     "dashboard": "Dashboard",
     "analytics": "Analytics",
-    "copyright": "© 2026 SCFHS."
+    "copyright": "© 2026 SCFHS.",
+    "openMenu": "Open Menu",
+    "closeMenu": "Close Menu",
+    "left": "Left",
+    "right": "Right"
   },
   "form": {
     "professionalName": "Professional Name",

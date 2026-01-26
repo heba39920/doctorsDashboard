@@ -51,15 +51,15 @@ const Analytics = () => {
   // Get professional types distribution
   const professionalTypes = Object.entries(statsData.by_professional_type)
     .sort(([, a], [, b]) => b - a)
-
+const isRTL = localStorage.getItem('language') === 'ar';
   return (
     <div className="min-h-screen bg-[var(--surface)] p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
+          <div className={`flex items-center gap-3 mb-2 ${isRTL ? 'justify-end' : 'justify-start'}`}>
             <BarChart3 className="w-8 h-8 text-[var(--primary)]" />
-            <h1 className="text-4xl font-bold text-[var(--textPrimary)]">
+            <h1 className="text-2xl font-bold text-[var(--textPrimary)]">
               {t('analytics.title')}
             </h1>
           </div>

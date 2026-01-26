@@ -20,7 +20,11 @@
     "addProfessional": "إضافة مهني",
     "dashboard": "لوحة التحكم",
     "analytics": "التحليلات",
-    "copyright": "© 2026 SCFHS."
+    "copyright": "© 2026 SCFHS.",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "left": "يسار",
+    "right": "يمين"
   },
   "form": {
     "professionalName": "اسم المهني",

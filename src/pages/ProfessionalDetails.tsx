@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { ArrowLeft, User, Mail, Phone, MapPin, Award, FileText, Briefcase, Building2, Calendar, Star, Loader2, AlertCircle, Trash2, Edit, IdCard, GraduationCap, Shield, BookOpen, Trophy, BookMarked, BriefcaseBusiness, DollarSign, Clock, Code, AlertTriangle } from "lucide-react"
+import { ArrowLeft, User, Mail, Phone, Award, FileText, Briefcase, Building2, Calendar, Star, Loader2, AlertCircle, Trash2, Edit, IdCard, GraduationCap, Shield, BookOpen, Trophy, BookMarked, BriefcaseBusiness, DollarSign, Clock, Code, AlertTriangle } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useGetProfessionalById, useDeleteProfessional, useUpdateProfessional } from "../utils/hooks/Hooks"
 import { convertProfessionalDataToLegacy, formatValue } from "../utils/helperfunctions/ProfessionalUtils"
@@ -108,7 +108,7 @@ const ProfessionalDetails = () => {
                   {specializations.length > 0 ? specializations.join(", ") : professional.specialization}
                 </span>
               </div>
-              <p className="text-white/90 text-lg">{formatValue(professional.location)}</p>
+           
             </div>
             <div className="flex flex-col gap-3">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20">
@@ -620,13 +620,7 @@ const ProfessionalDetails = () => {
                     </div>
                   </div>
                 )}
-                <div className="flex items-center gap-3 p-3 bg-[var(--surface)] rounded-lg">
-                  <MapPin className="w-5 h-5 text-[var(--primary)]" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-[var(--textSecondary)]">{t('professionalDetails.location')}</p>
-                    <p className="text-sm font-medium text-[var(--textPrimary)]">{formatValue(professional.location)}</p>
-                  </div>
-                </div>
+ 
              {professionalData.national_id && (
               <div className="flex items-center gap-3 p-3 bg-[var(--surface)] rounded-lg">
                 <IdCard className="w-5 h-5 text-[var(--primary)]" />

@@ -19,7 +19,6 @@ export const convertProfessionalDataToLegacy = (data: professionalData): profess
     email: data.email || null,
     phone: data.phone || null,
     specialization: data.specializations?.[0] || notSpecified,
-    location: data.work_places?.[0]?.workplace_name || notSpecified,
     experience: data.years_of_experience ? `${data.years_of_experience} years` : notSpecified,
     joinDate: data.created_at,
     filesCount: data.uploaded_files?.length || 0,
@@ -37,7 +36,6 @@ export const convertProfessionalListItemToLegacy = (item: professionalListItem):
     email: item.email || null,
     phone: item.phone || null,
     specialization: item.specializations?.[0] || notSpecified,
-    location: notSpecified,
     experience: item.years_of_experience ? `${item.years_of_experience} years` : notSpecified,
     joinDate: item.created_at,
     filesCount: 0, // Not available in list response

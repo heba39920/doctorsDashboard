@@ -1,12 +1,16 @@
 import { Sidebar } from "../Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { t } = useTranslation();
   const isRTL = localStorage.getItem('language') === 'ar';
+  
   return (
-    <div className={`flex min-h-screen bg-[var(--background)] ${isRTL ? 'text-right' : 'text-left'}`}>
+    <div className={`flex min-h-screen bg-[var(--background)] `}>
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       {isSidebarOpen && (
         <div
@@ -14,27 +18,19 @@ const Layout = () => {
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
-      <main className="flex-1 overflow-auto md:ml-25">
+      <main className={`flex-1 overflow-auto relative md:ml-25`}>
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="absolute top-8 end-4 z-30 p-2 bg-[var(--primary)] text-white rounded-lg md:hidden hover:bg-[var(--secondary)] transition-colors"
-          aria-label="Toggle sidebar"
+          className={`fixed top-4 z-50 p-3 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 md:hidden ${
+            isRTL ? 'left-4' : 'right-4'
+          }`}
+          aria-label={isSidebarOpen ? t('sidebar.closeMenu') : t('sidebar.openMenu')}
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            {isSidebarOpen ? (
-              <path d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
+          {isSidebarOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
         <Outlet />
       </main>
