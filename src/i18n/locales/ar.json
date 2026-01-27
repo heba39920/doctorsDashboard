@@ -69,7 +69,8 @@
     "clearSearch": "مسح البحث",
     "clearAllFilters": "مسح جميع الفلاتر",
     "showAll": "عرض جميع المهنيين",
-    "combinedResults": "النتائج المدمجة"
+    "combinedResults": "النتائج المدمجة",  
+    "specialization" :"التخصص"
   },
   "professionalDetails": {
     "title": "تفاصيل المهني",
@@ -103,7 +104,7 @@
     "issuer": "المصدر",
     "expiry": "الانتهاء",
     "trainingCourses": "الدورات التدريبية",
-    "courseName": "اسم الدورة",
+    "courseName": "اسم الدورة", 
     "provider": "المزود",
     "year": "السنة",
     "awardsAndRecognition": "الجوائز والتقديرات",

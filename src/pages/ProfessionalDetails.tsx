@@ -118,24 +118,24 @@ const ProfessionalDetails = () => {
               <User className="w-16 h-16 text-white" />
             </div>
             <div className={`flex-1 text-center ${isRTL ? 'md:text-right' : 'md:text-left'}`}>
-              <h1 className="text-5xl font-bold mb-3">{professional.name}</h1>
+              <h1 className="md:text-5xl text-3xl font-bold mb-3">{professional.name}</h1>
               <div className={`flex items-center justify-center gap-2 mb-4 flex-wrap ${isRTL ? 'md:justify-end' : 'md:justify-start'}`}>
                 <Award className="w-6 h-6" />
-                <span className="text-xl">
+                <span className="md:text-xl text-sm">
                   {specializations.length > 0 ? specializations.join(", ") : professional.specialization}
                 </span>
               </div>
            
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex w-full md:w-auto flex-col gap-3">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20">
-                <p className="text-3xl font-bold">
+                <p className="md:text-3xl text-xl font-bold">
                   {professionalData.years_of_experience || formatValue(professional.experience)}
                 </p>
                 <p className="text-sm text-white/80">{t('professionalDetails.experience')}</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20">
-                <p className="text-3xl font-bold">{professional.filesCount}</p>
+                <p className="md:text-3xl text-xl font-bold">{professional.filesCount}</p>
                 <p className="text-sm text-white/80">{t('professionalDetails.documents')}</p>
               </div>
             </div>

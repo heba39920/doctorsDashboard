@@ -62,7 +62,7 @@ const Analytics = () => {
         <div className="mb-8 bg-white rounded-xl border border-[var(--accent)] shadow-sm p-6">
           <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <div className={`flex items-center gap-3 mb-2 ${isRTL ? 'justify-end' : 'justify-start'}`}>
+              <div className={`flex items-center gap-1 mb-2 ${isRTL ? 'justify-end' : 'justify-start'}`}>
                 <BarChart3 className="w-8 h-8 text-[var(--primary)]" />
                 <h1 className="text-2xl font-bold text-[var(--textPrimary)]">
                   {t('analytics.title')}

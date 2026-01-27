@@ -70,7 +70,8 @@
     "clearSearch": "Clear Search",
     "clearAllFilters": "Clear All Filters",
     "showAll": "Show All Professionals",
-    "combinedResults": "Combined Results"
+    "combinedResults": "Combined Results",
+    "specialization" :"Specialization"
   },
   "professionalDetails": {
     "title": "Professional Details",

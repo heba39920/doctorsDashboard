@@ -65,7 +65,7 @@ const ProfessionalCard = ({ professional, onViewDetails, originalItem }: Profess
     })
   }
   return (
-    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 py-6 px-4 border border-[var(--accent)] hover:border-[var(--primary)]v flex flex-col justify-between">
+    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 py-6 px-4 border border-[var(--accent)] hover:border-[var(--primary)]v flex flex-col justify-between min-h-[200px]">
     <div>
     <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-4">
@@ -116,7 +116,7 @@ const ProfessionalCard = ({ professional, onViewDetails, originalItem }: Profess
           <div className="flex items-start gap-3 text-sm">
             <Award className="w-4 h-4 text-[var(--textSecondary)] flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <span className="text-[var(--textPrimary)] font-medium">{t('professionalDetails.specialization')}: </span>
+              <span className="text-[var(--textPrimary)]">{t('dashboard.specialization')}: </span>
               <span className="text-[var(--textPrimary)]">{specializations.join(", ")}</span>
             </div>
           </div>

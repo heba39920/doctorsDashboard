@@ -229,7 +229,7 @@ const Dashboard = () => {
             </div>
             <button
               onClick={openSidebar}
-              className={`md:hidden p-3 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 ${isRTL ? 'ml-4' : 'mr-4'}`}
+              className={`md:hidden p-3 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 `}
               aria-label={t('sidebar.openMenu')}
             >
               <Menu className="w-6 h-6" />
